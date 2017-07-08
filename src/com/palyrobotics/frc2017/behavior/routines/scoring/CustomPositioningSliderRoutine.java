@@ -11,8 +11,8 @@ import com.palyrobotics.frc2017.robot.HardwareAdapter;
 import com.palyrobotics.frc2017.robot.Robot;
 import com.palyrobotics.frc2017.subsystems.Slider;
 import com.palyrobotics.frc2017.subsystems.Spatula;
-import com.palyrobotics.frc2017.subsystems.Spatula.SpatulaState;
-import com.palyrobotics.frc2017.util.Subsystem; 
+import com.palyrobotics.frc2017.subsystems.Subsystem;
+import com.palyrobotics.frc2017.subsystems.Spatula.SpatulaState; 
 
 /**
  * Moves the slider to a setpoint
@@ -58,13 +58,9 @@ public class CustomPositioningSliderRoutine extends Routine {
 		switch(mState) {
 		case MOVING:
 			commands.wantedSliderState = Slider.SliderState.CUSTOM_POSITIONING;
-			try {
-				slider.run(commands, this);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
+
 //			} catch (InterruptedException e) {
 //				e.printStackTrace();
-			}
 			break;
 			case RAISING:
 			if(System.currentTimeMillis() > (raiseTime+startTime)) {
@@ -82,11 +78,6 @@ public class CustomPositioningSliderRoutine extends Routine {
 	public Commands cancel(Commands commands) {
 		commands.wantedSliderState = Slider.SliderState.IDLE;
 		commands.robotSetpoints.sliderCustomSetpoint = Optional.empty();
-		try {
-			slider.run(commands, this);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
 		return commands;
 	}
 

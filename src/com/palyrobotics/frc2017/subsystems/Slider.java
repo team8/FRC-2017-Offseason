@@ -13,8 +13,6 @@ import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
 import com.palyrobotics.frc2017.robot.HardwareAdapter;
 import com.palyrobotics.frc2017.robot.team254.lib.util.CrashTracker;
 import com.palyrobotics.frc2017.util.CANTalonOutput;
-import com.palyrobotics.frc2017.util.Subsystem;
-import com.palyrobotics.frc2017.util.archive.SubsystemLoop;
 import com.palyrobotics.frc2017.util.logger.Logger;
 import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
 
@@ -23,7 +21,7 @@ import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
  * @author Prashanti
  * Controls the slider subsystem,
  */
-public class Slider extends Subsystem implements SubsystemLoop {
+public class Slider extends Subsystem{
 	private static Slider instance = new Slider();
 	public static Slider getInstance() {
 		return instance;
@@ -120,19 +118,6 @@ public class Slider extends Subsystem implements SubsystemLoop {
 		sliderDist.updateValue(robotState.sliderPosition);
 		DashboardManager.getInstance().publishKVPair(sliderPotentiometer);
 		DashboardManager.getInstance().publishKVPair(sliderDist);
-	}
-	
-	/**
-	 * Takes in new set of commands, must be called by a routine!
-	 * @param commands the commands
-	 * @param master the object calling the method
-	 * @throws IllegalAccessException if master not a routine
-	 */
-	public void run(Commands commands,  Object master) throws IllegalAccessException {
-		//Throws an exception if called by an object that isn't a routine
-		if(!(master instanceof Routine)) {
-			throw new IllegalAccessException();
-		}
 		
 		mState = commands.wantedSliderState;
 		
@@ -176,6 +161,7 @@ public class Slider extends Subsystem implements SubsystemLoop {
 				break;
 		}		
 	}
+	
 	
 	/**
 	 * Encapsulate to use in both run and update methods

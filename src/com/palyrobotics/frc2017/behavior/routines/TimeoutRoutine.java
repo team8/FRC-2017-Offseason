@@ -2,7 +2,7 @@ package com.palyrobotics.frc2017.behavior.routines;
 
 import com.palyrobotics.frc2017.behavior.Routine;
 import com.palyrobotics.frc2017.config.Commands;
-import com.palyrobotics.frc2017.util.Subsystem;
+import com.palyrobotics.frc2017.subsystems.Subsystem;
 
 public class TimeoutRoutine extends Routine {
     double timeout;

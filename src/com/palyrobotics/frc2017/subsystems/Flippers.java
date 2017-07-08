@@ -4,8 +4,6 @@ import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.config.RobotState;
 import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
-import com.palyrobotics.frc2017.util.Subsystem;
-import com.palyrobotics.frc2017.util.archive.SubsystemLoop;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
@@ -15,7 +13,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  * Consists of two rods for the purpose of wall alignment during gear scoring
  * Each rod is controlled independently by a DoubleSolenoid
  */
-public class Flippers extends Subsystem implements SubsystemLoop {
+public class Flippers extends Subsystem {
 	
 	private static Flippers instance = new Flippers();
 	

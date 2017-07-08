@@ -11,7 +11,6 @@ import com.palyrobotics.frc2017.config.RobotState;
 import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
 import com.palyrobotics.frc2017.subsystems.*;
-import com.palyrobotics.frc2017.util.archive.SubsystemLooper;
 import com.palyrobotics.frc2017.util.logger.Logger;
 import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
 import com.palyrobotics.frc2017.robot.team254.lib.util.Looper;
@@ -31,8 +30,6 @@ public class Robot extends IterativeRobot {
 	public static Commands getCommands() {return commands;}
 
 	private OperatorInterface operatorInterface = OperatorInterface.getInstance();
-	// Instantiate separate thread controls
-	private SubsystemLooper mSubsystemLooper = new SubsystemLooper();
 	// Instantiate hardware updaters
 	private Looper mHardwareEnabledLooper = new Looper();
 	private Looper mHardwareSensorLooper = new Looper();
@@ -78,18 +75,12 @@ public class Robot extends IterativeRobot {
 			} catch (Exception e) {
 				System.exit(1);
 			}
-			mSubsystemLooper.register(mDrive);
-			mSubsystemLooper.register(mSlider);
-			mSubsystemLooper.register(mSpatula);
-			mSubsystemLooper.register(mIntake);
-			mSubsystemLooper.register(mClimber);
 		} else {
 			try {
 				mHardwareUpdater = new HardwareUpdater(mDrive);
 			} catch (Exception e) {
 				System.exit(1);
 			}
-			mSubsystemLooper.register(mDrive);
 		}
 		mHardwareSensorLooper.register(mHardwareUpdater.getHardwareSensorLoop());
 		mHardwareEnabledLooper.register(mHardwareUpdater.getHardwareEnabledLoop());
@@ -120,8 +111,6 @@ public class Robot extends IterativeRobot {
 		}
 		mHardwareUpdater.updateSensors(robotState);
 		mRoutineManager.reset(commands);
-		// Start control loops
-		mSubsystemLooper.start();
 
 		// Get the selected auto mode
 		AutoModeBase mode = AutoModeSelector.getInstance().getAutoMode();
@@ -159,7 +148,6 @@ public class Robot extends IterativeRobot {
 		DashboardManager.getInstance().toggleCANTable(true);
 		commands.wantedDriveState = Drive.DriveState.CHEZY;	//switch to chezy after auto ends
 		commands = operatorInterface.updateCommands(commands);
-		mSubsystemLooper.start();
 		mLogger.logRobotThread("End teleopInit()");
 		System.out.println("End teleopInit()");
 	}
@@ -186,8 +174,6 @@ public class Robot extends IterativeRobot {
 		
 		commands = new Commands();
 		
-		// Stop control loops
-		mSubsystemLooper.stop();
 
 		// Stop controllers
 		mDrive.setNeutral();

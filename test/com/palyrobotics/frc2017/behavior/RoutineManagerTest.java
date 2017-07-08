@@ -9,7 +9,7 @@ import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.subsystems.Climber;
 import com.palyrobotics.frc2017.subsystems.Drive;
 import com.palyrobotics.frc2017.subsystems.Intake;
-import com.palyrobotics.frc2017.util.Subsystem;
+import com.palyrobotics.frc2017.subsystems.Subsystem;
 
 import org.junit.Rule;
 import org.junit.Test;
