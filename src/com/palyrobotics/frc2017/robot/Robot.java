@@ -20,14 +20,14 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
 	// Instantiate singleton classes
-	private static RobotState robotState = new RobotState();
-	public static RobotState getRobotState() {
+	private RobotState robotState = new RobotState();
+	public RobotState getRobotState() {
 		return robotState;
 	}
 
 	// Single instance to be passed around
-	private static Commands commands = new Commands();
-	public static Commands getCommands() {return commands;}
+	private Commands commands = new Commands();
+	public Commands getCommands() {return commands;}
 
 	private OperatorInterface operatorInterface = OperatorInterface.getInstance();
 	// Instantiate hardware updaters

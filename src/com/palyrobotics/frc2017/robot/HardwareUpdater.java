@@ -31,10 +31,12 @@ class HardwareUpdater {
 		return new HardwareEnabledLoop();
 	}
 	
+	private Robot mRobot = new Robot();
+	
 	public class HardwareSensorLoop implements Loop {
 		@Override
 		public void update() {
-			updateSensors(Robot.getRobotState());
+			updateSensors(mRobot.getRobotState());
 		}
 
 		@Override

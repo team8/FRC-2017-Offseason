@@ -72,7 +72,8 @@ public class Commands {
 	 * @author Nihar
 	 */
 	public static class JoystickInput {
-		public static class XboxInput extends JoystickInput {
+
+		public class XboxInput extends JoystickInput {
 			public double leftX, leftY, rightX, rightY;
 			public XboxInput(double leftX, double leftY, double rightX, double rightY) {
 				super(leftX, leftY, false);
