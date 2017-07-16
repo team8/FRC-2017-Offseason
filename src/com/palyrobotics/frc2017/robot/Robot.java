@@ -71,7 +71,7 @@ public class Robot extends IterativeRobot {
 		}
 		if (Constants.kRobotName == Constants.RobotName.STEIK) {
 			try {
-				mHardwareUpdater = new HardwareUpdater(mDrive, mFlippers, mSlider, mSpatula, mIntake, mClimber);
+				mHardwareUpdater = new HardwareUpdater(this, mDrive, mFlippers, mSlider, mSpatula, mIntake, mClimber);
 			} catch (Exception e) {
 				System.exit(1);
 			}

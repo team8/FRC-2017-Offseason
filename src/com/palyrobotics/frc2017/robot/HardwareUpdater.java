@@ -31,7 +31,6 @@ class HardwareUpdater {
 		return new HardwareEnabledLoop();
 	}
 	
-	private Robot mRobot = new Robot();
 	
 	public class HardwareSensorLoop implements Loop {
 		@Override
@@ -67,22 +66,25 @@ class HardwareUpdater {
 	}
 	
 	// Subsystem references
+	
 	private Drive mDrive;
 	private Flippers mFlippers;
 	private Slider mSlider;
 	private Spatula mSpatula;
 	private Intake mIntake;
 	private Climber mClimber;
+	private Robot mRobot;
 
 	/**
 	 * Hardware Updater for Steik
 	 */
-	HardwareUpdater(Drive drive, Flippers flippers, Slider slider, Spatula spatula, Intake intake, Climber climber)
+	HardwareUpdater(Robot robot, Drive drive, Flippers flippers, Slider slider, Spatula spatula, Intake intake, Climber climber)
 			throws Exception {
 		if (Constants.kRobotName != Constants.RobotName.STEIK) {
 			System.out.println("Incompatible robot name and hardware!");
 			throw new Exception();
 		}
+		this.mRobot = robot;
 		this.mDrive = drive;
 		this.mFlippers = flippers;
 		this.mSlider = slider;
