@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot {
 	// Single instance to be passed around
 	private Commands commands = new Commands();
 	public Commands getCommands() {return commands;}
+	
 
 	private OperatorInterface operatorInterface = OperatorInterface.getInstance();
 	// Instantiate hardware updaters

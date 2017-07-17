@@ -12,14 +12,15 @@ import com.palyrobotics.frc2017.subsystems.Subsystem;
 public class SafetyTurnAngleRoutine extends Routine {
 	private double targetAngle;
 	private Routine mRoutine;
+	private RobotState robotState;
 
-	public SafetyTurnAngleRoutine(double angle) {
+	public SafetyTurnAngleRoutine(double angle, RobotState robotState) {
 		this.targetAngle = angle;
 	}
 
 	@Override
 	public void start() {
-		if(Robot.getRobotState().drivePose.heading == -0.0) {
+		if(robotState.drivePose.heading == -0.0) {
 			System.out.println("Gyro broken");
 			mRoutine = new EncoderTurnAngleRoutine(targetAngle);
         } else {
@@ -31,7 +32,7 @@ public class SafetyTurnAngleRoutine extends Routine {
 
 	@Override
 	public Commands update(Commands commands) {
-		System.out.println("angle: "+Robot.getRobotState().drivePose.heading);
+		System.out.println("angle: "+ robotState.drivePose.heading);
 		return mRoutine.update(commands);
 	}
 

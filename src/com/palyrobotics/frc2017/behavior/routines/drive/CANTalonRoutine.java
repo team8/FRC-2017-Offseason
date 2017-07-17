@@ -3,6 +3,7 @@ package com.palyrobotics.frc2017.behavior.routines.drive;
 import com.ctre.CANTalon;
 import com.palyrobotics.frc2017.behavior.Routine;
 import com.palyrobotics.frc2017.config.Commands;
+import com.palyrobotics.frc2017.config.RobotState;
 import com.palyrobotics.frc2017.robot.Robot;
 import com.palyrobotics.frc2017.subsystems.Drive;
 import com.palyrobotics.frc2017.subsystems.Subsystem;
@@ -21,11 +22,13 @@ public class CANTalonRoutine extends Routine {
 	
 	private double timeout;
 	private double startTime;
+	private RobotState robotState;
 	
-	public CANTalonRoutine(DriveSignal controller, boolean relativeSetpoint) {
+	public CANTalonRoutine(DriveSignal controller, boolean relativeSetpoint, RobotState robotState) {
 		this.mSignal = controller;
 		this.timeout = 1 << 30;
 		this.relativeSetpoint = relativeSetpoint;
+		this.robotState = robotState;
 	}
 
 	/*
@@ -34,10 +37,11 @@ public class CANTalonRoutine extends Routine {
 	  * 
 	  * Timeout is in seconds
 	  */
-	public CANTalonRoutine(DriveSignal controller, boolean relativeSetpoint, double timeout) {
+	public CANTalonRoutine(DriveSignal controller, boolean relativeSetpoint, RobotState robotState, double timeout) {
 		this.mSignal = controller;
 		this.relativeSetpoint = relativeSetpoint;
 		this.timeout = timeout * 1000;
+		this.robotState = robotState;
 	}
 
 	@Override
@@ -48,19 +52,19 @@ public class CANTalonRoutine extends Routine {
 		if (relativeSetpoint) {
 			if (mSignal.leftMotor.getControlMode() == CANTalon.TalonControlMode.MotionMagic) {
 				mSignal.leftMotor.setMotionMagic(mSignal.leftMotor.getSetpoint()+
-								Robot.getRobotState().drivePose.leftEnc,
+								robotState.drivePose.leftEnc,
 						mSignal.leftMotor.gains,
 						mSignal.leftMotor.cruiseVel, mSignal.leftMotor.accel);
 				mSignal.rightMotor.setMotionMagic(mSignal.rightMotor.getSetpoint()+
-								Robot.getRobotState().drivePose.rightEnc,
+								robotState.drivePose.rightEnc,
 						mSignal.rightMotor.gains,
 						mSignal.rightMotor.cruiseVel, mSignal.rightMotor.accel);
 			}
 			else if (mSignal.leftMotor.getControlMode() == CANTalon.TalonControlMode.Position) {
 				mSignal.leftMotor.setPosition(mSignal.leftMotor.getSetpoint()+
-						Robot.getRobotState().drivePose.leftEnc, mSignal.leftMotor.gains);
+						robotState.drivePose.leftEnc, mSignal.leftMotor.gains);
 				mSignal.rightMotor.setPosition(mSignal.rightMotor.getSetpoint()+
-						Robot.getRobotState().drivePose.rightEnc, mSignal.rightMotor.gains);
+						robotState.drivePose.rightEnc, mSignal.rightMotor.gains);
 				
 
 			}
