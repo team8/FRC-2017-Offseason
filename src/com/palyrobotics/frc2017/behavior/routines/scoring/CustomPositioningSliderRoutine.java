@@ -32,12 +32,11 @@ public class CustomPositioningSliderRoutine extends Routine {
 	
 	private double startTime;
 	private static final double raiseTime = 1700;
-	private RobotState robotState;
+	private static RobotState robotState;
 	
 	// Target should be absolute position in inches
-	public CustomPositioningSliderRoutine(double target, RobotState robotState) {
+	public CustomPositioningSliderRoutine(double target) {
 		this.target = target;
-		this.robotState = robotState;
 	}
 	
 	@Override

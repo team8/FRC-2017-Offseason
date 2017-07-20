@@ -53,7 +53,7 @@ class HardwareUpdater {
 		}
 		@Override
 		public void update() {
-			updateSubsystems();
+			updateHardware();
 		}
 
 		@Override
@@ -333,9 +333,9 @@ class HardwareUpdater {
 	}
 
 	/**
-	 * Sets the output from all subsystems for the respective hardware
+	 * Updates the hardware to run with output values of subsystems
 	 */
-	void updateSubsystems() {
+	void updateHardware() {
 		// On Derica only update the drivetrain
 		if (Constants.kRobotName == Constants.RobotName.STEIK) {
 			updateSteikSubsystems();

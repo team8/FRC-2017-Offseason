@@ -1,6 +1,9 @@
 package com.palyrobotics.frc2017.robot;
 
+import java.util.Optional;
+
 import com.ctre.CANTalon;
+import com.kauailabs.navx.frc.AHRS;
 import com.palyrobotics.frc2017.auto.AutoModeBase;
 import com.palyrobotics.frc2017.auto.AutoModeSelector;
 import com.palyrobotics.frc2017.behavior.RoutineManager;
@@ -8,6 +11,7 @@ import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.config.Constants;
 import com.palyrobotics.frc2017.config.Gains;
 import com.palyrobotics.frc2017.config.RobotState;
+import com.palyrobotics.frc2017.config.Constants.RobotName;
 import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
 import com.palyrobotics.frc2017.subsystems.*;
@@ -20,20 +24,20 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
 	// Instantiate singleton classes
-	private RobotState robotState = new RobotState();
-	public RobotState getRobotState() {
+	private static RobotState robotState = new RobotState();
+	public static RobotState getRobotState() {
 		return robotState;
 	}
 
 	// Single instance to be passed around
-	private Commands commands = new Commands();
-	public Commands getCommands() {return commands;}
+	private static Commands commands = new Commands();
+	public static Commands getCommands() {return commands;}
 	
 
 	private OperatorInterface operatorInterface = OperatorInterface.getInstance();
+	// Instantiate separate thread controls
+	//private SubsystemLooper mSubsystemLooper = new SubsystemLooper();
 	// Instantiate hardware updaters
-	private Looper mHardwareEnabledLooper = new Looper();
-	private Looper mHardwareSensorLooper = new Looper();
 	private RoutineManager mRoutineManager = new RoutineManager();
 
 	// Subsystem controllers
@@ -76,6 +80,7 @@ public class Robot extends IterativeRobot {
 			} catch (Exception e) {
 				System.exit(1);
 			}
+
 		} else {
 			try {
 				mHardwareUpdater = new HardwareUpdater(mDrive);
@@ -83,10 +88,8 @@ public class Robot extends IterativeRobot {
 				System.exit(1);
 			}
 		}
-		mHardwareSensorLooper.register(mHardwareUpdater.getHardwareSensorLoop());
-		mHardwareEnabledLooper.register(mHardwareUpdater.getHardwareEnabledLoop());
+
 		mHardwareUpdater.initHardware();
-		mHardwareSensorLooper.start();
 		System.out.println("Auto: "+AutoModeSelector.getInstance().getAutoMode().toString());
 //		AndroidConnectionHelper.getInstance().StartVisionApp();
 		System.out.println("End robotInit()");
@@ -101,7 +104,6 @@ public class Robot extends IterativeRobot {
 		mLogger.logRobotThread("Start autonomousInit()");
 		DashboardManager.getInstance().toggleCANTable(true);
 		robotState.gamePeriod = RobotState.GamePeriod.AUTO;
-		mHardwareEnabledLooper.start();
 		mHardwareUpdater.configureTalons(false);
 		// Wait for talons to update
 		try {
@@ -133,22 +135,26 @@ public class Robot extends IterativeRobot {
 		//		logPeriodic();
 //		System.out.println(robotState.sliderEncoder);
 		mLogger.logRobotThread("Nexus xdist: "+AndroidConnectionHelper.getInstance().getXDist());
+		mHardwareUpdater.updateSensors(robotState);
 		commands = mRoutineManager.update(commands);
+		updateSubsystems();
+		mHardwareUpdater.updateHardware();
 	}
 
 	@Override
 	public void teleopInit() {
 		System.out.println("Start teleopInit()");
-		mHardwareEnabledLooper.start();
 		mLogger.start();
 		mLogger.logRobotThread("Start teleopInit()");
 		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
 		mHardwareUpdater.configureTalons(false);
 		mHardwareUpdater.updateSensors(robotState);
+		mHardwareUpdater.updateHardware();
 		mRoutineManager.reset(commands);
 		DashboardManager.getInstance().toggleCANTable(true);
 		commands.wantedDriveState = Drive.DriveState.CHEZY;	//switch to chezy after auto ends
 		commands = operatorInterface.updateCommands(commands);
+		//mSubsystemLooper.start();
 		mLogger.logRobotThread("End teleopInit()");
 		System.out.println("End teleopInit()");
 	}
@@ -158,9 +164,14 @@ public class Robot extends IterativeRobot {
 		// Update RobotState
 		// Gets joystick commands
 		// Updates commands based on routines
-//		mLogger.logRobotThread("Teleop Commands: ", commands);
-//		logPeriodic();
+		mLogger.logRobotThread("Teleop Commands: ", commands);
+		logPeriodic();
+		
+		mHardwareUpdater.updateSensors(robotState);
 		commands = mRoutineManager.update(operatorInterface.updateCommands(commands));
+		updateSubsystems();
+		mHardwareUpdater.updateHardware();
+		
 		//Update the hardware
 	}
 
@@ -178,7 +189,6 @@ public class Robot extends IterativeRobot {
 
 		// Stop controllers
 		mDrive.setNeutral();
-		mHardwareEnabledLooper.stop();
 		mHardwareUpdater.configureDriveTalons();
 		mHardwareUpdater.disableTalons();
 		DashboardManager.getInstance().toggleCANTable(false);
@@ -223,5 +233,14 @@ public class Robot extends IterativeRobot {
 		}
 		if (DriverStation.getInstance().isBrownedOut()) mLogger.logRobotThread("Browned out");
 		if (!DriverStation.getInstance().isNewControlData()) mLogger.logRobotThread("Didn't receive new control packet!");
+	}
+	
+	private void updateSubsystems(){
+		mDrive.update(commands, robotState);
+		mFlippers.update(commands, robotState);
+		mSlider.update(commands, robotState);
+		mSpatula.update(commands, robotState);
+		mIntake.update(commands, robotState);
+		mClimber.update(commands, robotState);
 	}
 }

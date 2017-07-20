@@ -22,13 +22,12 @@ public class CANTalonRoutine extends Routine {
 	
 	private double timeout;
 	private double startTime;
-	private RobotState robotState;
+	private static RobotState robotState;
 	
-	public CANTalonRoutine(DriveSignal controller, boolean relativeSetpoint, RobotState robotState) {
+	public CANTalonRoutine(DriveSignal controller, boolean relativeSetpoint) {
 		this.mSignal = controller;
 		this.timeout = 1 << 30;
 		this.relativeSetpoint = relativeSetpoint;
-		this.robotState = robotState;
 	}
 
 	/*
@@ -37,11 +36,10 @@ public class CANTalonRoutine extends Routine {
 	  * 
 	  * Timeout is in seconds
 	  */
-	public CANTalonRoutine(DriveSignal controller, boolean relativeSetpoint, RobotState robotState, double timeout) {
+	public CANTalonRoutine(DriveSignal controller, boolean relativeSetpoint, double timeout) {
 		this.mSignal = controller;
 		this.relativeSetpoint = relativeSetpoint;
 		this.timeout = timeout * 1000;
-		this.robotState = robotState;
 	}
 
 	@Override
