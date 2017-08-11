@@ -5,7 +5,7 @@ import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.robot.Robot;
 import com.palyrobotics.frc2017.subsystems.Slider;
 import com.palyrobotics.frc2017.subsystems.Spatula;
-import com.palyrobotics.frc2017.util.Subsystem;
+import com.palyrobotics.frc2017.subsystems.Subsystem;
 import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
 
 import java.util.Arrays;
@@ -110,11 +110,7 @@ public class MultiSampleVisionSliderRoutine extends Routine {
 					}
 				}
 			}
-		try {
 			System.out.println(commands.robotSetpoints.sliderCustomSetpoint.get());
-			slider.run(commands, this);
-		} catch (IllegalAccessException e) {
-		}
 		return commands;
 	}
 
@@ -122,11 +118,6 @@ public class MultiSampleVisionSliderRoutine extends Routine {
 	public Commands cancel(Commands commands) {
 		commands.wantedSliderState = Slider.SliderState.IDLE;
 		commands.robotSetpoints.sliderCustomSetpoint = Optional.empty();
-		try {
-			slider.run(commands, this);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
 		return commands;
 	}
 

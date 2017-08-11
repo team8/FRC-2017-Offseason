@@ -1,12 +1,5 @@
 package com.palyrobotics.frc2017.vision;
 
-import com.palyrobotics.frc2017.config.Constants;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.rmi.UnexpectedException;
-
 /**
  * Created by Alvin on 2/15/2017.
  */
