@@ -24,6 +24,7 @@ public class LegacyTrajectoryFollower {
     public String name;
     
     private double last_calc_velocity_error;
+    private double last_pos_;
     
     private String canTableString;
 
@@ -41,6 +42,7 @@ public class LegacyTrajectoryFollower {
 
     public void reset() {
         last_error_ = 0.0;
+        last_pos_ = 0.0;
         current_segment = 0;
     }
 
@@ -69,14 +71,17 @@ public class LegacyTrajectoryFollower {
             		segment.vel,
             		segment.acc,
             		distance_so_far,
-            		(Robot.getRobotState().drivePose.leftSpeed/(12.0*Constants.kDriveSpeedUnitConversion)),
+//            		(Robot.getRobotState().drivePose.leftSpeed/(12.0*Constants.kDriveSpeedUnitConversion)),
 //            		((error - last_error_)) / segment.dt,
+                    (distance_so_far - last_pos_)/segment.dt,
             		error,
-            		segment.vel-(Robot.getRobotState().drivePose.leftSpeed/(12.0*Constants.kDriveSpeedUnitConversion))
+//            		segment.vel-(Robot.getRobotState().drivePose.leftSpeed/(12.0*Constants.kDriveSpeedUnitConversion))
 //            		((error - last_error_)) / segment.dt - segment.vel
+                    (distance_so_far - last_pos_)/segment.dt - segment.vel
             });
             
             last_error_ = error;
+            last_pos_ = distance_so_far;
             last_calc_velocity_error = calc_velocity_error;
             
             current_heading = segment.heading;
