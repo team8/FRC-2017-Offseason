@@ -118,6 +118,7 @@ public class Logger {
 	 * Called on subsystem thread
 	 * @param value
 	 */
+	@Deprecated
 	public void logSubsystemThread(Object value) {
 		try {
 			mSubsystemThreadLogs.add(new LeveledString(Level.INFO, value.toString()));
@@ -139,6 +140,7 @@ public class Logger {
 	 * @param key
 	 * @param value will call .toString()
 	 */
+	@Deprecated
 	public void logSubsystemThread(String key, Object value) {
 		try {
 			mSubsystemThreadLogs.add(new LeveledString(Level.INFO, key + ": " + value.toString()));
@@ -146,7 +148,7 @@ public class Logger {
 			System.err.println("Attempted concurrent modification on subsystem logger");
 		}
 	}
-
+	
 	public void logSubsystemThread(Level level, String key, Object value) {
 		try {
 			mSubsystemThreadLogs.add(new LeveledString(level, key + ": " + value.toString()));
@@ -159,6 +161,7 @@ public class Logger {
 	 * Called on robot thread
 	 * @param value
 	 */
+	@Deprecated
 	public void logRobotThread(Object value) {
 		try {
 			mRobotThreadLogs.add(new LeveledString(Level.INFO, value.toString()));
@@ -180,6 +183,7 @@ public class Logger {
 	 * @param key will be paired with the object
 	 * @param value will call .toString()
 	 */
+	@Deprecated
 	public void logRobotThread(String key, Object value) {
 		try {
 			mRobotThreadLogs.add(new LeveledString(Level.INFO, key + ": " + value.toString()));

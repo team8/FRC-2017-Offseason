@@ -1,5 +1,7 @@
 package com.palyrobotics.frc2017.robot;
 
+import java.util.logging.Level;
+
 import com.ctre.CANTalon;
 import com.palyrobotics.frc2017.auto.AutoModeBase;
 import com.palyrobotics.frc2017.auto.AutoModeSelector;
@@ -97,8 +99,7 @@ public class Robot extends IterativeRobot {
 		mHardwareSensorLooper.start();
 		System.out.println("Auto: "+AutoModeSelector.getInstance().getAutoMode().toString());
 //		AndroidConnectionHelper.getInstance().StartVisionApp();
-		System.out.println("End robotInit()");
-		mLogger.logRobotThread("End robotInit()");
+		mLogger.logRobotThread(Level.INFO, "End robotInit()");
 	}
 
 	@Override

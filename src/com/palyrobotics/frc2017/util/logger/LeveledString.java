@@ -4,7 +4,7 @@ import java.util.logging.Level;
 
 /**
  * Created by Joseph on 8/20/17.
- * Implementation of TimestampedString with the addition of logger levels
+ * Replacing TimestamptedString with support for logger levels
  */
 public class LeveledString implements Comparable<LeveledString> {
 	private String mString;
