@@ -18,6 +18,7 @@ import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
 import com.team254.lib.trajectory.Path;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * Side peg autonomous using motion profiles
@@ -127,7 +128,6 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 
 		mSequentialRoutine = new SequentialRoutine(sequence);
 	}
-
 	private Routine getFirstAttempt() {
 		ArrayList<Routine> scoreSequence = new ArrayList<Routine>();
 

@@ -1,5 +1,11 @@
 package com.palyrobotics.frc2017.robot;
 
+<<<<<<< HEAD
+=======
+import java.util.logging.Level;
+
+import com.ctre.CANTalon;
+>>>>>>> e2a618b... Implemented logger levels
 import com.palyrobotics.frc2017.auto.AutoModeBase;
 import com.palyrobotics.frc2017.auto.AutoModeSelector;
 import com.palyrobotics.frc2017.behavior.RoutineManager;
@@ -51,19 +57,22 @@ public class Robot extends IterativeRobot {
 		System.out.println("Finished starting");
 		mLogger.setFileName("8/20 testing");
 		mLogger.start();
-		mLogger.logRobotThread("robotInit() start");
-		mLogger.logRobotThread("Robot name: "+Constants.kRobotName);
-		mLogger.logRobotThread("Alliance: " + DriverStation.getInstance().getAlliance());
-		mLogger.logRobotThread("FMS connected: "+DriverStation.getInstance().isFMSAttached());
-		mLogger.logRobotThread("Alliance station: "+DriverStation.getInstance().getLocation());
+		DashboardManager.getInstance().robotInit();
+		AndroidConnectionHelper.getInstance().start();
+		mLogger.logRobotThread(Level.FINE, "Finished starting");
+		mLogger.logRobotThread(Level.INFO, "Start robotInit() for "+Constants.kRobotName.toString());
+		mLogger.logRobotThread(Level.INFO, "Robot name: "+Constants.kRobotName);
+		mLogger.logRobotThread(Level.INFO, "Alliance: " + DriverStation.getInstance().getAlliance());
+		mLogger.logRobotThread(Level.INFO, "FMS connected: "+DriverStation.getInstance().isFMSAttached());
+		mLogger.logRobotThread(Level.INFO, "Alliance station: "+DriverStation.getInstance().getLocation());
 		try {
 			DriverStation.reportWarning("Auto is "+AutoModeSelector.getInstance().getAutoMode().toString(), false);
-			mLogger.logRobotThread((AndroidConnectionHelper.getInstance().isServerStarted()) ?
-					"Nexus streaming": "Nexus not streaming");
-			mLogger.logRobotThread("Auto", AutoModeSelector.getInstance().getAutoMode().toString());
+			mLogger.logRobotThread((AndroidConnectionHelper.getInstance().isServerStarted()) ? Level.INFO : Level.WARNING,
+					(AndroidConnectionHelper.getInstance().isServerStarted()) ? "Nexus streaming": "Nexus not streaming");
+			mLogger.logRobotThread(Level.INFO, "Auto", AutoModeSelector.getInstance().getAutoMode().toString());
 			DashboardManager.getInstance().publishKVPair(new DashboardValue("automodestring", AutoModeSelector.getInstance().getAutoMode().toString()));
 		} catch (NullPointerException e) {
-			mLogger.logRobotThread("Auto: "+e.getMessage());
+			mLogger.logRobotThread(Level.SEVERE, "Auto: "+e.getMessage());
 		}
 		if (Constants.kRobotName == Constants.RobotName.STEIK) {
 			try {
@@ -83,16 +92,13 @@ public class Robot extends IterativeRobot {
 		mHardwareUpdater.initHardware();
 		System.out.println("Auto: "+AutoModeSelector.getInstance().getAutoMode().toString());
 //		AndroidConnectionHelper.getInstance().StartVisionApp();
-		System.out.println("End robotInit()");
-		mLogger.logRobotThread("End robotInit()");
+		mLogger.logRobotThread(Level.INFO, "End robotInit()");
 	}
 
 	@Override
 	public void autonomousInit() {
-		System.out.println("Start autonomousInit()");
-
 		mLogger.start();
-		mLogger.logRobotThread("Start autonomousInit()");
+		mLogger.logRobotThread(Level.INFO, "Start autonomousInit()");
 		DashboardManager.getInstance().toggleCANTable(true);
 		robotState.gamePeriod = RobotState.GamePeriod.AUTO;
 		mHardwareUpdater.configureTalons(false);
@@ -114,10 +120,9 @@ public class Robot extends IterativeRobot {
 		// Prestart and run the auto mode
 		mode.prestart();
 		mRoutineManager.addNewRoutine(mode.getRoutine());
-		mLogger.logRobotThread("Auto mode", mode.toString());
-		mLogger.logRobotThread("Auto routine", mode.getRoutine().toString());
-		System.out.println("End autonomousInit()");
-		mLogger.logRobotThread("End autonomousInit()");
+		mLogger.logRobotThread(Level.FINE, "Auto mode", mode.toString());
+		mLogger.logRobotThread(Level.FINER, "Auto routine", mode.getRoutine().toString());
+		mLogger.logRobotThread(Level.INFO, "End autonomousInit()");
 	}
 
 	@Override
@@ -128,7 +133,7 @@ public class Robot extends IterativeRobot {
 //		System.out.println("Talon mode:"+HardwareAdapter.getInstance().getSlider().sliderTalon.getControlMode());
 		//		logPeriodic();
 //		System.out.println(robotState.sliderEncoder);
-		mLogger.logRobotThread("Nexus xdist: "+AndroidConnectionHelper.getInstance().getXDist());
+		mLogger.logRobotThread(Level.FINER, "Nexus xdist: "+AndroidConnectionHelper.getInstance().getXDist());
 		commands = mRoutineManager.update(commands);
 		mHardwareUpdater.updateSensors(robotState);
 		updateSubsystems();
@@ -139,7 +144,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		System.out.println("Start teleopInit()");
 		mLogger.start();
-		mLogger.logRobotThread("Start teleopInit()");
+		mLogger.logRobotThread(Level.INFO, "Start teleopInit()");
 		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
 		mHardwareUpdater.configureTalons(false);
 		mHardwareUpdater.updateSensors(robotState);
@@ -170,9 +175,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	@Override
+	
 	public void disabledInit() {
-		System.out.println("Start disabledInit()");
-		mLogger.logRobotThread("Start disabledInit()");
+		mLogger.logRobotThread(Level.INFO, "Start disabledInit()");
 		System.out.println("Current Auto Mode: " + AutoModeSelector.getInstance().getAutoMode().toString());
 		robotState.gamePeriod = RobotState.GamePeriod.DISABLED;
 		// Stops updating routines
@@ -187,7 +192,7 @@ public class Robot extends IterativeRobot {
 		mHardwareUpdater.configureDriveTalons();
 		mHardwareUpdater.disableTalons();
 		DashboardManager.getInstance().toggleCANTable(false);
-		mLogger.logRobotThread("End disabledInit()");
+		mLogger.logRobotThread(Level.INFO, "End disabledInit()");
 		mLogger.cleanup();
 		System.out.println("Log file: "+mLogger.getLogPath());
 		// Manually run garbage collector
@@ -210,24 +215,24 @@ public class Robot extends IterativeRobot {
 
 	// Call during tele and auto periodic
 	private void logPeriodic() {
-		mLogger.logRobotThread("Match time", DriverStation.getInstance().getMatchTime());
-		mLogger.logRobotThread("DS Connected", DriverStation.getInstance().isDSAttached());
-		mLogger.logRobotThread("DS Voltage", DriverStation.getInstance().getBatteryVoltage());
+		mLogger.logRobotThread(Level.FINER, "Match time", DriverStation.getInstance().getMatchTime());
+		mLogger.logRobotThread(Level.FINE, "DS Connected", DriverStation.getInstance().isDSAttached());
+		mLogger.logRobotThread(Level.FINER,"DS Voltage", DriverStation.getInstance().getBatteryVoltage());
 //		mLogger.logRobotThread("Battery current", HardwareAdapter.getInstance().kPDP.getTotalCurrent());
 //		mLogger.logRobotThread("Battery watts drawn", HardwareAdapter.getInstance().kPDP.getTotalPower());
-		mLogger.logRobotThread("Outputs disabled", DriverStation.getInstance().isSysActive());
-		mLogger.logRobotThread("FMS connected: "+DriverStation.getInstance().isFMSAttached());
+		mLogger.logRobotThread(Level.FINE, "Outputs disabled", DriverStation.getInstance().isSysActive());
+		mLogger.logRobotThread(Level.FINE, "FMS connected"+DriverStation.getInstance().isFMSAttached());
 		if (DriverStation.getInstance().isAutonomous()) {
-			mLogger.logRobotThread("Game period: Auto");
+			mLogger.logRobotThread(Level.FINE, "Game period: Auto");
 		} else if (DriverStation.getInstance().isDisabled()) {
-			mLogger.logRobotThread("Game period: Disabled");
+			mLogger.logRobotThread(Level.FINE,"Game period: Disabled");
 		} else if (DriverStation.getInstance().isOperatorControl()) {
-			mLogger.logRobotThread("Game period: Teleop");
+			mLogger.logRobotThread(Level.FINE,"Game period: Teleop");
 		} else if (DriverStation.getInstance().isTest()) {
-			mLogger.logRobotThread("Game period: Test");
+			mLogger.logRobotThread(Level.FINE,"Game period: Test");
 		}
-		if (DriverStation.getInstance().isBrownedOut()) mLogger.logRobotThread("Browned out");
-		if (!DriverStation.getInstance().isNewControlData()) mLogger.logRobotThread("Didn't receive new control packet!");
+		if (DriverStation.getInstance().isBrownedOut()) mLogger.logRobotThread(Level.WARNING, "Browned out");
+		if (!DriverStation.getInstance().isNewControlData()) mLogger.logRobotThread(Level.WARNING, "Didn't receive new control packet!");
 	}
 
 	private void startSubsystems() {

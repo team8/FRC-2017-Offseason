@@ -1,5 +1,7 @@
 package com.palyrobotics.frc2017.config;
 
+import java.util.logging.Level;
+
 import com.palyrobotics.frc2017.robot.team254.lib.util.ConstantsBase;
 
 public class Constants extends ConstantsBase {
@@ -10,6 +12,18 @@ public class Constants extends ConstantsBase {
 	// Initialization constants
 	public static final RobotName kRobotName = RobotName.STEIK;
 	public static final boolean kCalibrateSliderWithPotentiometer = true;
+	
+	/*
+	 * Explanation of logging levels:
+	 * SEVERE: Errors which will cause a major part of the program to stop working (1000)
+	 * WARNING: Errors which will cause a minor failure or indicate a risk of serious failure (900)
+	 * INFO: Information on the normal functioning of the robot; Expect this level and above to be printed to console (800)
+	 * FINE: Basic tracing information (500)
+	 * FINER: More detailed tracing information (400)
+	 * FINEST: Most detailed tracing information, highest volume (300)
+	 */
+	public static Level displayLevel = Level.INFO;
+	public static Level writeLevel = Level.FINEST;
 	
 	// Android app information
 	public static String kPackageName = "com.frc8.team8vision";

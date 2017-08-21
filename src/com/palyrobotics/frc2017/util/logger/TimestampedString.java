@@ -6,6 +6,8 @@ package com.palyrobotics.frc2017.util.logger;
  * Allows data structures to sort the strings by timestamp
  * And then retrieve the String
  * Also automatically adds a newline to the end
+ * Update by Joseph on 8/20/17.
+ * Now legacy, replaced by LeveledString
  */
 public class TimestampedString implements Comparable<TimestampedString> {
 	private String mString;
