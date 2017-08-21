@@ -1,5 +1,7 @@
 package com.palyrobotics.frc2017.config;
 
+import java.util.logging.Level;
+
 import com.palyrobotics.frc2017.robot.team254.lib.util.ConstantsBase;
 
 public class Constants extends ConstantsBase {
@@ -10,6 +12,8 @@ public class Constants extends ConstantsBase {
 	// Initialization constants
 	public static final RobotName kRobotName = RobotName.STEIK;
 	public static final boolean kCalibrateSliderWithPotentiometer = true;
+	//Primitive level implementation
+	public static final Level displayLevel = Level.INFO;
 	
 	// Android app information
 	public static String kPackageName = "com.frc8.team8vision";

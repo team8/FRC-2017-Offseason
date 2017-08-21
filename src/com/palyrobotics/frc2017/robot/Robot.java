@@ -52,12 +52,12 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
+		mLogger.setFileName("SF");
+		mLogger.start();
 		System.out.println("Start robotInit() for "+Constants.kRobotName.toString());
 		DashboardManager.getInstance().robotInit();
 		AndroidConnectionHelper.getInstance().start();
 		System.out.println("Finished starting");
-		mLogger.setFileName("SF");
-		mLogger.start();
 		mLogger.logRobotThread("robotInit() start");
 		mLogger.logRobotThread("Robot name: "+Constants.kRobotName);
 		mLogger.logRobotThread("Alliance: " + DriverStation.getInstance().getAlliance());
