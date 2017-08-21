@@ -211,13 +211,15 @@ public class Logger {
 							mSubsystemThreadLogs.clear();
 							mRobotThreadLogs.clear();
 							mData.forEach((LeveledString c) -> {
-								if(Constants.displayLevel.intValue() <= c.getLevel().intValue()){
-									System.out.println(c.toString());
-								}
-								try {
-									Files.append(c.getLeveledString(), mainLog, Charsets.UTF_8);
-								} catch (IOException e) {
-									e.printStackTrace();
+								if(Constants.writeLevel.intValue() <= c.getLevel().intValue()) {
+									if(Constants.displayLevel.intValue() <= c.getLevel().intValue()){
+										System.out.println(c.toString());
+									}
+									try {
+										Files.append(c.getLeveledString(), mainLog, Charsets.UTF_8);
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
 								}
 							});
 							mData.clear();
@@ -254,14 +256,16 @@ public class Logger {
 			mData.addAll(mSubsystemThreadLogs);
 			mData.sort(LeveledString::compareTo);
 			mData.forEach((LeveledString c) -> {
-				if(Constants.displayLevel.intValue() <= c.getLevel().intValue()){
-					System.out.println(c.toString());
-				}
-				try {
-					Files.append(c.getLeveledString(), mainLog, Charsets.UTF_8);
-				} catch (IOException e) {
-					System.out.println("Unable to write last strings");
-					e.printStackTrace();
+				if(Constants.writeLevel.intValue() <= c.getLevel().intValue()) {
+					if(Constants.displayLevel.intValue() <= c.getLevel().intValue()){
+						System.out.println(c.toString());
+					}
+					try {
+						Files.append(c.getLeveledString(), mainLog, Charsets.UTF_8);
+					} catch (IOException e) {
+						System.out.println("Unable to write last strings");
+						e.printStackTrace();
+					}
 				}
 			});
 			mRobotThreadLogs.clear();

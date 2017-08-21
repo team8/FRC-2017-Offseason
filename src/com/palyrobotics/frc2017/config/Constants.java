@@ -14,6 +14,7 @@ public class Constants extends ConstantsBase {
 	public static final boolean kCalibrateSliderWithPotentiometer = true;
 	//Primitive level implementation
 	public static final Level displayLevel = Level.INFO;
+	public static final Level writeLevel = Level.FINEST;
 	
 	// Android app information
 	public static String kPackageName = "com.frc8.team8vision";
