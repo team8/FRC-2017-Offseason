@@ -42,7 +42,6 @@ public class Robot extends IterativeRobot {
 
 	// Subsystem controllers
 	private Drive mDrive = Drive.getInstance();
-	private Flippers mFlippers = Flippers.getInstance();
 	private Slider mSlider = Slider.getInstance();
 	private Spatula mSpatula = Spatula.getInstance();
 	private Intake mIntake = Intake.getInstance();
@@ -76,7 +75,7 @@ public class Robot extends IterativeRobot {
 		}
 		if (Constants.kRobotName == Constants.RobotName.STEIK) {
 			try {
-				mHardwareUpdater = new HardwareUpdater(this, mDrive, mFlippers, mSlider, mSpatula, mIntake, mClimber);
+				mHardwareUpdater = new HardwareUpdater(this, mDrive, mSlider, mSpatula, mIntake, mClimber);
 			} catch (Exception e) {
 				System.exit(1);
 			}
@@ -112,8 +111,11 @@ public class Robot extends IterativeRobot {
 		} catch (InterruptedException e) {
 
 		}
+
 		mHardwareUpdater.updateSensors(robotState);
 		mRoutineManager.reset(commands);
+
+		startSubsystems();
 
 		// Get the selected auto mode
 		AutoModeBase mode = AutoModeSelector.getInstance().getAutoMode();
@@ -135,8 +137,8 @@ public class Robot extends IterativeRobot {
 		//		logPeriodic();
 //		System.out.println(robotState.sliderEncoder);
 		mLogger.logRobotThread("Nexus xdist: "+AndroidConnectionHelper.getInstance().getXDist());
-		mHardwareUpdater.updateSensors(robotState);
 		commands = mRoutineManager.update(commands);
+		mHardwareUpdater.updateSensors(robotState);
 		updateSubsystems();
 		mHardwareUpdater.updateHardware();
 	}
@@ -154,7 +156,7 @@ public class Robot extends IterativeRobot {
 		DashboardManager.getInstance().toggleCANTable(true);
 		commands.wantedDriveState = Drive.DriveState.CHEZY;	//switch to chezy after auto ends
 		commands = operatorInterface.updateCommands(commands);
-		//mSubsystemLooper.start();
+		startSubsystems();
 		mLogger.logRobotThread("End teleopInit()");
 		System.out.println("End teleopInit()");
 	}
@@ -166,9 +168,9 @@ public class Robot extends IterativeRobot {
 		// Updates commands based on routines
 		mLogger.logRobotThread("Teleop Commands: ", commands);
 		logPeriodic();
-		
-		mHardwareUpdater.updateSensors(robotState);
+
 		commands = mRoutineManager.update(operatorInterface.updateCommands(commands));
+		mHardwareUpdater.updateSensors(robotState);
 		updateSubsystems();
 		mHardwareUpdater.updateHardware();
 		
@@ -186,6 +188,7 @@ public class Robot extends IterativeRobot {
 		
 		commands = new Commands();
 		
+		stopSubsystems();
 
 		// Stop controllers
 		mDrive.setNeutral();
@@ -234,13 +237,28 @@ public class Robot extends IterativeRobot {
 		if (DriverStation.getInstance().isBrownedOut()) mLogger.logRobotThread("Browned out");
 		if (!DriverStation.getInstance().isNewControlData()) mLogger.logRobotThread("Didn't receive new control packet!");
 	}
-	
-	private void updateSubsystems(){
+
+	private void startSubsystems() {
+		mDrive.start();
+		mSlider.start();
+		mSpatula.start();
+		mIntake.start();
+		mClimber.start();
+	}
+
+	private void updateSubsystems() {
 		mDrive.update(commands, robotState);
-		mFlippers.update(commands, robotState);
 		mSlider.update(commands, robotState);
 		mSpatula.update(commands, robotState);
 		mIntake.update(commands, robotState);
 		mClimber.update(commands, robotState);
+	}
+
+	private void stopSubsystems() {
+		mDrive.stop();
+		mSlider.stop();
+		mSpatula.stop();
+		mIntake.stop();
+		mClimber.stop();
 	}
 }

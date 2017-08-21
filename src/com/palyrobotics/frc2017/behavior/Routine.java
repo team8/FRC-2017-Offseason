@@ -17,7 +17,6 @@ public abstract class Routine {
      * {@link LegacyDrive#controllerOnTarget()}
      */
     protected final Drive drive = Drive.getInstance();
-    protected final Flippers flippers = Flippers.getInstance();
     protected final Slider slider = Slider.getInstance();
     protected final Spatula spatula = Spatula.getInstance();
     protected final Intake intake = Intake.getInstance();

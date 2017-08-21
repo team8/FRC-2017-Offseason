@@ -68,7 +68,6 @@ class HardwareUpdater {
 	// Subsystem references
 	
 	private Drive mDrive;
-	private Flippers mFlippers;
 	private Slider mSlider;
 	private Spatula mSpatula;
 	private Intake mIntake;
@@ -78,7 +77,7 @@ class HardwareUpdater {
 	/**
 	 * Hardware Updater for Steik
 	 */
-	HardwareUpdater(Robot robot, Drive drive, Flippers flippers, Slider slider, Spatula spatula, Intake intake, Climber climber)
+	HardwareUpdater(Robot robot, Drive drive, Slider slider, Spatula spatula, Intake intake, Climber climber)
 			throws Exception {
 		if (Constants.kRobotName != Constants.RobotName.STEIK) {
 			System.out.println("Incompatible robot name and hardware!");
@@ -86,7 +85,6 @@ class HardwareUpdater {
 		}
 		this.mRobot = robot;
 		this.mDrive = drive;
-		this.mFlippers = flippers;
 		this.mSlider = slider;
 		this.mSpatula = spatula;
 		this.mIntake = intake;

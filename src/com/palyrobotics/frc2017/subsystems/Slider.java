@@ -120,8 +120,9 @@ public class Slider extends Subsystem{
 		DashboardManager.getInstance().publishKVPair(sliderDist);
 		
 		mState = commands.wantedSliderState;
-		
+		System.out.println("SLIDER STATE: " + mState);
 		switch(mState) {
+
 			case IDLE:
 				mTarget = SliderTarget.NONE;
 				mOutput.setPercentVBus(0);

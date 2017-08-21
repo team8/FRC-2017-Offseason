@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import com.palyrobotics.frc2017.behavior.Routine;
 import com.palyrobotics.frc2017.util.archive.DriveSignal;
-import com.palyrobotics.frc2017.util.logger.Logger;
 import com.palyrobotics.frc2017.subsystems.Climber;
 import com.palyrobotics.frc2017.subsystems.Drive;
-import com.palyrobotics.frc2017.subsystems.Flippers;
 import com.palyrobotics.frc2017.subsystems.Intake;
 import com.palyrobotics.frc2017.subsystems.Slider;
 import com.palyrobotics.frc2017.subsystems.Spatula;
@@ -28,8 +26,6 @@ public class Commands {
 
 	// Store WantedStates for each subsystem state machine
 	public Drive.DriveState wantedDriveState = Drive.DriveState.NEUTRAL;
-	public Flippers.FlipperSignal wantedFlipperSignal = new Flippers.FlipperSignal(
-			DoubleSolenoid.Value.kForward, DoubleSolenoid.Value.kForward);
 	public Slider.SliderState wantedSliderState = Slider.SliderState.IDLE;
 	public Spatula.SpatulaState wantedSpatulaState = Spatula.SpatulaState.UP;
 	public Intake.IntakeState wantedIntakeState = Intake.IntakeState.IDLE;
@@ -108,7 +104,6 @@ public class Commands {
 	public Commands copy() {
 		Commands copy = new Commands();
 		copy.wantedDriveState = this.wantedDriveState;
-		copy.wantedFlipperSignal = this.wantedFlipperSignal;
 		copy.wantedSpatulaState = this.wantedSpatulaState;
 		copy.wantedSliderState = this.wantedSliderState;
 		copy.wantedIntakeState = this.wantedIntakeState;

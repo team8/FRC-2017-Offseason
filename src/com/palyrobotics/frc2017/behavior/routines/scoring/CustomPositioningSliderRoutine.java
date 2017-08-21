@@ -32,8 +32,7 @@ public class CustomPositioningSliderRoutine extends Routine {
 	
 	private double startTime;
 	private static final double raiseTime = 1700;
-	private static RobotState robotState;
-	
+
 	// Target should be absolute position in inches
 	public CustomPositioningSliderRoutine(double target) {
 		this.target = target;
@@ -93,7 +92,7 @@ public class CustomPositioningSliderRoutine extends Routine {
 			return true;
 		}
 		return updated && mState==DistancePositioningState.MOVING &&
-				(System.currentTimeMillis() - startTime > 1000) && (robotState.sliderVelocity == 0) && slider.onTarget();
+				(System.currentTimeMillis() - startTime > 1000) && (Robot.getRobotState().sliderVelocity == 0) && slider.onTarget();
 	}
 
 	@Override

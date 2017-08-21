@@ -69,21 +69,6 @@ public class OperatorInterface {
 		newCommands.sliderStickInput = new JoystickInput(mSliderStick.getX(), mSliderStick.getY(), mSliderStick.getTrigger());
 		newCommands.climberStickInput = new JoystickInput(mClimberStick.getX(), mClimberStick.getY(), mClimberStick.getTrigger());
 
-		// Flippers
-		//TODO figure out flipper controls
-		// Left Flipper
-//		if (mSliderStick.getRawButton(1)) {
-//			newCommands.wantedFlipperSignal.leftFlipper = DoubleSolenoid.Value.kForward;
-//		} else if (mSliderStick.getRawButton(1)) {
-//			newCommands.wantedFlipperSignal.leftFlipper = DoubleSolenoid.Value.kReverse;
-//		}
-		//Right Flipper
-//		if (mSliderStick.getRawButton(1)) {
-//			newCommands.wantedFlipperSignal.rightFlipper = DoubleSolenoid.Value.kForward;
-//		} else if (mSliderStick.getRawButton(1)) {
-//			newCommands.wantedFlipperSignal.rightFlipper = DoubleSolenoid.Value.kReverse;
-//		}
-
 		// Slider
 		if (mSliderStick.getRawButton(2)) {	// opposite of preferred thumb position
 			newCommands.robotSetpoints.sliderSetpoint = Slider.SliderTarget.NONE;
@@ -98,6 +83,7 @@ public class OperatorInterface {
 			newCommands.robotSetpoints.sliderSetpoint = Slider.SliderTarget.RIGHT;
 			newCommands.addWantedRoutine(new AutocorrectPositioningSliderRoutine(Slider.SliderTarget.RIGHT));
 		} else if (Slider.getInstance().getSliderState() == Slider.SliderState.IDLE) {
+			System.out.println("SLIDER STATE SHOULD BE SETTING TO IDLE");
 			newCommands.addWantedRoutine(new ManualControlSliderRoutine());
 		}
 
