@@ -18,6 +18,7 @@ import com.palyrobotics.frc2017.util.logger.Logger;
 import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * Created by Nihar on 2/11/17.
@@ -78,14 +79,12 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 	@Override
 	public void prestart() {
 		if(AndroidConnectionHelper.getInstance().isServerStarted()){
-			System.out.println("Failed to find vision server, revert auto");
+			Logger.getInstance().logRobotThread(Level.WARNING, "Failed to find vision server, revert auto");
 		}
-		System.out.println("Starting "+this.toString()+" Auto Mode");
-		Logger.getInstance().logRobotThread("Starting "+this.toString()+" Auto Mode");
+		Logger.getInstance().logRobotThread(Level.FINEST, "Starting "+this.toString()+" Auto Mode");
 
 		if (!AndroidConnectionHelper.getInstance().isServerStarted() || !AndroidConnectionHelper.getInstance().isNexusConnected()) {
-			System.out.println("Vision server not started!");
-			Logger.getInstance().logRobotThread("Vision server not detected, fallback to default side peg");
+			Logger.getInstance().logRobotThread(Level.WARNING, "Vision server not detected, fallback to default side peg");
 			SidePegAutoMode backup = new SidePegAutoMode(mVariant, SideAutoPostVariant.BACKUP);
 			backup.prestart();
 			mSequentialRoutine = backup.getRoutine();
@@ -145,7 +144,7 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 			driveForwardSetpoint = AutoDistances.kBlueBoilerForwardDistanceInches * Constants.kDriveTicksPerInch;
 			break;
 		default:
-			System.err.println("What in tarnation no side peg distance");
+			Logger.getInstance().logRobotThread(Level.WARNING, "What in tarnation no side peg distance");
 			driveForwardSetpoint = 0;
 			break;
 		}
@@ -155,7 +154,7 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 		driveForward.rightMotor.setMotionMagic(driveForwardSetpoint, mLongGains,
 				Gains.kSteikLongDriveMotionMagicCruiseVelocity, Gains.kSteikLongDriveMotionMagicMaxAcceleration);
 		
-		Logger.getInstance().logRobotThread("Drive forward", driveForward);
+		Logger.getInstance().logRobotThread(Level.FINEST, "Drive forward", driveForward);
 		ArrayList<Routine> initialSlide = new ArrayList<>();
 		initialSlide.add(new CANTalonRoutine(driveForward, true));
 		initialSlide.add(new CustomPositioningSliderRoutine(sliderPositions[0]));
@@ -183,7 +182,7 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 			driveToAirshipSetpoint = AutoDistances.k254BoilerAirshipDistanceInches * Constants.kDriveTicksPerInch;
 			break;
 		default:
-			System.err.println("What in tarnation no side peg airship distance");
+			Logger.getInstance().logRobotThread(Level.WARNING, "What in tarnation no side peg distance");
 			driveToAirshipSetpoint = 0;
 			break;
 		}
@@ -193,7 +192,7 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 		driveToAirship.rightMotor.setMotionMagic(driveToAirshipSetpoint, mLongGains,
 				Gains.kSteikLongDriveMotionMagicCruiseVelocity, Gains.kSteikLongDriveMotionMagicMaxAcceleration);
 		
-		Logger.getInstance().logRobotThread("Drive to airship", driveToAirship);
+		Logger.getInstance().logRobotThread(Level.FINEST, "Drive to airship", driveToAirship);
 		return new CANTalonRoutine(driveToAirship, true, 5);
 	}
 	

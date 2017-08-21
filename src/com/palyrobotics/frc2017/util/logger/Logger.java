@@ -2,6 +2,7 @@ package com.palyrobotics.frc2017.util.logger;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.palyrobotics.frc2017.config.Constants;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
 
 /**
  * Log is at /home/lvuser/logs/fileName directory
@@ -34,11 +36,11 @@ public class Logger {
 
 	private boolean isEnabled = false;
 	
-	private ArrayList<TimestampedString> mData;
+	private ArrayList<LeveledString> mData;
 	// Separates to prevent concurrent modification exception
-	private ArrayList<TimestampedString> mSubsystemThreadLogs = new ArrayList<>();
-	private ArrayList<TimestampedString> mRobotThreadLogs = new ArrayList<>();
-	private ConcurrentLinkedQueue<TimestampedString> mUnknownThreadLogs = new ConcurrentLinkedQueue<TimestampedString>();
+	private ArrayList<LeveledString> mSubsystemThreadLogs = new ArrayList<>();
+	private ArrayList<LeveledString> mRobotThreadLogs = new ArrayList<>();
+	private ConcurrentLinkedQueue<LeveledString> mUnknownThreadLogs = new ConcurrentLinkedQueue<LeveledString>();
 
 	// synchronized lock for writing out the latest data
 	private final Object writingLock = new Object();
@@ -116,47 +118,83 @@ public class Logger {
 	 * Called on subsystem thread
 	 * @param value
 	 */
+	@Deprecated
 	public void logSubsystemThread(Object value) {
 		try {
-			mSubsystemThreadLogs.add(new TimestampedString(value.toString()));
+			mSubsystemThreadLogs.add(new LeveledString(Level.INFO, value.toString()));
 		} catch (ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on subsystem logger");
 		}
 	}
 
+	public void logSubsystemThread(Level level, Object value) {
+		try {
+			mSubsystemThreadLogs.add(new LeveledString(level, value.toString()));
+		} catch (ConcurrentModificationException e) {
+			System.err.println("Attempted concurrent modification on subsystem logger");
+		}
+	}
+	
 	/**
 	 * Called on subsystem thread
 	 * @param key
 	 * @param value will call .toString()
 	 */
+	@Deprecated
 	public void logSubsystemThread(String key, Object value) {
 		try {
-			mSubsystemThreadLogs.add(new TimestampedString(key + ": " + value.toString()));
+			mSubsystemThreadLogs.add(new LeveledString(Level.INFO, key + ": " + value.toString()));
 		} catch (ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on subsystem logger");
 		}
 	}
-
+	
+	public void logSubsystemThread(Level level, String key, Object value) {
+		try {
+			mSubsystemThreadLogs.add(new LeveledString(level, key + ": " + value.toString()));
+		} catch (ConcurrentModificationException e) {
+			System.err.println("Attempted concurrent modification on subsystem logger");
+		}
+	}
+	
 	/**
 	 * Called on robot thread
 	 * @param value
 	 */
+	@Deprecated
 	public void logRobotThread(Object value) {
 		try {
-			mRobotThreadLogs.add(new TimestampedString(value.toString()));
+			mRobotThreadLogs.add(new LeveledString(Level.INFO, value.toString()));
 		} catch (ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on robot logger");
 		}
 	}
 
+	public void logRobotThread(Level level, Object value) {
+		try {
+			mRobotThreadLogs.add(new LeveledString(level, value.toString()));
+		} catch (ConcurrentModificationException e) {
+			System.err.println("Attempted concurrent modification on robot logger");
+		}
+	}
+	
 	/**
 	 * Called on robot thread
 	 * @param key will be paired with the object
 	 * @param value will call .toString()
 	 */
+	@Deprecated
 	public void logRobotThread(String key, Object value) {
 		try {
-			mRobotThreadLogs.add(new TimestampedString(key + ": " + value.toString()));
+			mRobotThreadLogs.add(new LeveledString(Level.INFO, key + ": " + value.toString()));
+		} catch (ConcurrentModificationException e) {
+			System.err.println("Attempted concurrent modification on robot logger");
+		}
+	}
+	
+	public void logRobotThread(Level level, String key, Object value) {
+		try {
+			mRobotThreadLogs.add(new LeveledString(level, key + ": " + value.toString()));
 		} catch (ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on robot logger");
 		}
@@ -173,14 +211,19 @@ public class Logger {
 						if (isEnabled) {
 							mData = new ArrayList<>(mRobotThreadLogs);
 							mData.addAll(mSubsystemThreadLogs);
-							mData.sort(TimestampedString::compareTo);
+							mData.sort(LeveledString::compareTo);
 							mSubsystemThreadLogs.clear();
 							mRobotThreadLogs.clear();
-							mData.forEach((TimestampedString c) -> {
-								try {
-									Files.append(c.getTimestampedString(), mainLog, Charsets.UTF_8);
-								} catch (IOException e) {
-									e.printStackTrace();
+							mData.forEach((LeveledString c) -> {
+								if(Constants.writeLevel.intValue() <= c.getLevel().intValue()) {
+									if(Constants.displayLevel.intValue() <= c.getLevel().intValue()){
+										System.out.println(c.toString());
+									}
+									try {
+										Files.append(c.getLeveledString(), mainLog, Charsets.UTF_8);
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
 								}
 							});
 							mData.clear();
@@ -215,13 +258,18 @@ public class Logger {
 		synchronized (writingLock) {
 			mData = new ArrayList<>(mRobotThreadLogs);
 			mData.addAll(mSubsystemThreadLogs);
-			mData.sort(TimestampedString::compareTo);
-			mData.forEach((TimestampedString c) -> {
-				try {
-					Files.append(c.getTimestampedString(), mainLog, Charsets.UTF_8);
-				} catch (IOException e) {
-					System.out.println("Unable to write last strings");
-					e.printStackTrace();
+			mData.sort(LeveledString::compareTo);
+			mData.forEach((LeveledString c) -> {
+				if(Constants.writeLevel.intValue() <= c.getLevel().intValue()) {
+					if(Constants.displayLevel.intValue() <= c.getLevel().intValue()){
+						System.out.println(c.toString());
+					}
+					try {
+						Files.append(c.getLeveledString(), mainLog, Charsets.UTF_8);
+					} catch (IOException e) {
+						System.out.println("Unable to write last strings");
+						e.printStackTrace();
+					}
 				}
 			});
 			mRobotThreadLogs.clear();
