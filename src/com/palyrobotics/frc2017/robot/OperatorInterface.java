@@ -83,7 +83,6 @@ public class OperatorInterface {
 			newCommands.robotSetpoints.sliderSetpoint = Slider.SliderTarget.RIGHT;
 			newCommands.addWantedRoutine(new AutocorrectPositioningSliderRoutine(Slider.SliderTarget.RIGHT));
 		} else if (Slider.getInstance().getSliderState() == Slider.SliderState.IDLE) {
-			System.out.println("SLIDER STATE SHOULD BE SETTING TO IDLE");
 			newCommands.addWantedRoutine(new ManualControlSliderRoutine());
 		}
 

@@ -20,7 +20,6 @@ public class SubsystemUpdateTest {
 		
 		Drive.getInstance().update(c, r);
 		Climber.getInstance().update(c, r);
-		Flippers.getInstance().update(c, r);
 		Spatula.getInstance().update(c, r);
 		Slider.getInstance().update(c, r);
 		Spatula.getInstance().update(c, r);

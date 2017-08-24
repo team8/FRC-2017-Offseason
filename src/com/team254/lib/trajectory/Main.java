@@ -20,7 +20,7 @@ public class Main {
 	private static final double kMaxVel = 180.0/12;
 	private static final double kMaxAcc = 120.0/12;
 	private static final double kMaxJerk = 50.0;
-	private static final double kDt = 0.01;
+	private static final double kDt = 0.02;
 
 	// Values pulled from gains
 	private static final double kShortVel = Gains.kSteikShortDriveMotionMagicCruiseVelocity/(Constants.kDriveSpeedUnitConversion*12);
