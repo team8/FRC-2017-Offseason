@@ -203,8 +203,8 @@ public class Main {
 			// turn left
 			WaypointSequence p = new WaypointSequence(10);
 			p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-			p.addWaypoint(new WaypointSequence.Waypoint(kBlueLoadingPegX/12.0,
-					kBlueLoadingPegY/12.0, kTurnAngle));
+			p.addWaypoint(new WaypointSequence.Waypoint((kBlueLoadingPegX-12+6*Math.sqrt(3))/12.0,
+					(kBlueLoadingPegY-12*Math.sqrt(3)-6)/12.0, kTurnAngle));
 
 			Path path = PathGenerator.makePath(p, config,
 					kWheelbaseWidth, path_name);
