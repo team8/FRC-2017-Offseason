@@ -51,6 +51,7 @@ public class Logger {
 	private int duplicatePrevent = 0;
 	private File mainLog;
 
+	private String os = null;
 //	// Finds the driver station console output
 //	private File rioLog;
 
@@ -79,7 +80,7 @@ public class Logger {
 //			fileName = new SimpleDateFormat("MMMdd HH-mm").format(date);
 //		}
 		fileName = fileName + new SimpleDateFormat("MMMdd HH-mm").format(date);
-		String os = System.getProperty("os.name");
+		os = System.getProperty("os.name");
 		String filePath;
 		if (os.startsWith("Mac")) {
 			filePath = "logs" + File.separatorChar + fileName;
@@ -252,6 +253,15 @@ public class Logger {
 			return "NoLogYet";
 		}
 	}
+	
+	/**
+	 * Sends local file to driver station
+	 * @param localFile the log file
+	 * @return successful
+	 */
+	private boolean sendLog(File localFile) {
+		return localFile != null;
+	}
 
 	// Used to cleanup internally, write out last words, etc
 	private synchronized void shutdown() {
@@ -283,6 +293,9 @@ public class Logger {
 				e.printStackTrace();
 			}
 			isEnabled = false;
+		}
+		if(os.startsWith("NI")) {
+			sendLog(mainLog);
 		}
 //		// Try to copy riolog to logging directory if it exists
 //		if (rioLog != null) {
