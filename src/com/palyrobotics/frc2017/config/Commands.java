@@ -2,6 +2,7 @@ package com.palyrobotics.frc2017.config;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.logging.Level;
 
 import com.palyrobotics.frc2017.behavior.Routine;
 import com.palyrobotics.frc2017.util.archive.DriveSignal;
@@ -38,7 +39,7 @@ public class Commands {
 	public void addWantedRoutine(Routine wantedRoutine) {
 		for(Routine routine : wantedRoutines) {
 			if(routine.getClass().equals(wantedRoutine.getClass())) {
-				System.out.println("tried to add duplicate routine!" + routine.getName());
+				Logger.getInstance().logRobotThread(Level.WARNING, "tried to add duplicate routine!" + routine.getName());
 				return;
 			}
 		}

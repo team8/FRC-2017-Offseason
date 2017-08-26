@@ -1,5 +1,7 @@
 package com.palyrobotics.frc2017.subsystems;
 
+import java.util.logging.Level;
+
 import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.config.RobotState;
 import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
@@ -16,6 +18,7 @@ import com.palyrobotics.frc2017.config.Gains;
 import com.palyrobotics.frc2017.util.archive.CheesyDriveHelper;
 import com.palyrobotics.frc2017.util.archive.DriveSignal;
 import com.palyrobotics.frc2017.util.archive.SubsystemLoop;
+import com.palyrobotics.frc2017.util.logger.Logger;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
@@ -118,14 +121,14 @@ public class Drive extends Subsystem implements SubsystemLoop {
 			case OFF_BOARD_CONTROLLER:
 				if (mController == null) {
 					setDriveOutputs(DriveSignal.getNeutralSignal());
-					System.err.println("No offboard controller to use!");
+					Logger.getInstance().logSubsystemThread(Level.SEVERE, "No offboard controller to use!");
 					break;
 				}
 				setDriveOutputs(mController.update(mCachedRobotState));
 				break;
 			case ON_BOARD_CONTROLLER:
 				if (mController == null) {
-					System.err.println("No onboard controller to use!");
+					Logger.getInstance().logSubsystemThread(Level.SEVERE, "No onboard controller to use!");
 					commands.wantedDriveState = DriveState.NEUTRAL;
 				} else {
 					setDriveOutputs(mController.update(mCachedRobotState));
@@ -192,7 +195,7 @@ public class Drive extends Subsystem implements SubsystemLoop {
 	}
 	
 	public void setTurnAngleEncoderSetpoint(double angle) {
-		System.out.println("Encoder angle "+angle);
+		Logger.getInstance().logSubsystemThread(Level.FINEST, "Encoder angle "+angle);
 		mController = new EncoderTurnAngleController(mCachedPose, angle);
 		newController = true;
 	}

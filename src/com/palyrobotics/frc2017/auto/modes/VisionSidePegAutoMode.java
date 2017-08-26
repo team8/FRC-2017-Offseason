@@ -81,7 +81,7 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 		if(AndroidConnectionHelper.getInstance().isServerStarted()){
 			Logger.getInstance().logRobotThread(Level.WARNING, "Failed to find vision server, revert auto");
 		}
-		Logger.getInstance().logRobotThread(Level.FINEST, "Starting "+this.toString()+" Auto Mode");
+		Logger.getInstance().logRobotThread(Level.FINE, "Starting "+this.toString()+" Auto Mode");
 
 		if (!AndroidConnectionHelper.getInstance().isServerStarted() || !AndroidConnectionHelper.getInstance().isNexusConnected()) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Vision server not detected, fallback to default side peg");
@@ -154,7 +154,7 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 		driveForward.rightMotor.setMotionMagic(driveForwardSetpoint, mLongGains,
 				Gains.kSteikLongDriveMotionMagicCruiseVelocity, Gains.kSteikLongDriveMotionMagicMaxAcceleration);
 		
-		Logger.getInstance().logRobotThread(Level.FINEST, "Drive forward", driveForward);
+		Logger.getInstance().logRobotThread(Level.FINE, "Drive forward", driveForward);
 		ArrayList<Routine> initialSlide = new ArrayList<>();
 		initialSlide.add(new CANTalonRoutine(driveForward, true));
 		initialSlide.add(new CustomPositioningSliderRoutine(sliderPositions[0]));
@@ -192,7 +192,7 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 		driveToAirship.rightMotor.setMotionMagic(driveToAirshipSetpoint, mLongGains,
 				Gains.kSteikLongDriveMotionMagicCruiseVelocity, Gains.kSteikLongDriveMotionMagicMaxAcceleration);
 		
-		Logger.getInstance().logRobotThread(Level.FINEST, "Drive to airship", driveToAirship);
+		Logger.getInstance().logRobotThread(Level.FINE, "Drive to airship", driveToAirship);
 		return new CANTalonRoutine(driveToAirship, true, 5);
 	}
 	
