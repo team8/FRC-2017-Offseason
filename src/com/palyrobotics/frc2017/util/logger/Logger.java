@@ -51,8 +51,8 @@ public class Logger {
 	private int duplicatePrevent = 0;
 	private File mainLog;
 
-	// Finds the driver station console output
-	private File rioLog;
+//	// Finds the driver station console output
+//	private File rioLog;
 
 	public boolean setFileName(String fileName) {
 		if (mainLog != null) {
@@ -75,9 +75,10 @@ public class Logger {
 			return;
 		}
 		Date date = new Date();
-		if (fileName == null) {
-			fileName = new SimpleDateFormat("MMMdd HH-mm").format(date);
-		}
+//		if (fileName == null) {
+//			fileName = new SimpleDateFormat("MMMdd HH-mm").format(date);
+//		}
+		fileName = fileName + new SimpleDateFormat("MMMdd HH-mm").format(date);
 		String os = System.getProperty("os.name");
 		String filePath;
 		if (os.startsWith("Mac")) {
@@ -89,8 +90,8 @@ public class Logger {
 			// Pray that this is a roborio
 			// TODO: Maybe find the exact OS name
 			filePath = "/home/lvuser/logs/" + fileName;
-			// TODO:
-			rioLog = new File("/var/local/natinst/log/FRC_UserProgram.log");
+//			// TODO:
+//			rioLog = new File("/var/local/natinst/log/FRC_UserProgram.log");
 		}
 		mainLog = new File(filePath+File.separatorChar+"log.log");
 		while (mainLog.exists()) {
@@ -283,14 +284,14 @@ public class Logger {
 			}
 			isEnabled = false;
 		}
-		// Try to copy riolog to logging directory if it exists
-		if (rioLog != null) {
-			try {
-				Files.copy(rioLog, new File("/home/lvuser/logs/" + fileName+"/riolog"+duplicatePrevent+".log"));
-			} catch (IOException e) {
-				System.out.println("Unable to copy riolog");
-				e.printStackTrace();
-			}
-		}
+//		// Try to copy riolog to logging directory if it exists
+//		if (rioLog != null) {
+//			try {
+//				Files.copy(rioLog, new File("/home/lvuser/logs/" + fileName+"/riolog"+duplicatePrevent+".log"));
+//			} catch (IOException e) {
+//				System.out.println("Unable to copy riolog");
+//				e.printStackTrace();
+//			}
+//		}
 	}
 }

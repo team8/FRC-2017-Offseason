@@ -82,7 +82,7 @@ public class SidePegAutoMode extends AutoModeBase {
 
 	@Override
 	public void prestart() {
-		Logger.getInstance().logRobotThread(Level.FINEST, "Starting "+this.toString()+" Auto Mode");
+		Logger.getInstance().logRobotThread(Level.FINE, "Starting "+this.toString()+" Auto Mode");
 
 		ArrayList<Routine> sequence = new ArrayList<>();
 
@@ -155,7 +155,7 @@ public class SidePegAutoMode extends AutoModeBase {
 		driveForward.rightMotor.setMotionMagic(driveForwardSetpoint, mLongGains,
 				Gains.kSteikLongDriveMotionMagicCruiseVelocity, Gains.kSteikLongDriveMotionMagicMaxAcceleration);
 		
-		Logger.getInstance().logRobotThread(Level.FINEST, "Drive forward", driveForward);
+		Logger.getInstance().logRobotThread(Level.FINE, "Drive forward", driveForward);
 		ArrayList<Routine> initialSlide = new ArrayList<>();
 		initialSlide.add(new CANTalonRoutine(driveForward, true));
 		initialSlide.add(new CustomPositioningSliderRoutine(sliderPositions[0]));
@@ -193,7 +193,7 @@ public class SidePegAutoMode extends AutoModeBase {
 		driveToAirship.rightMotor.setMotionMagic(driveToAirshipSetpoint, mLongGains,
 				Gains.kSteikLongDriveMotionMagicCruiseVelocity, Gains.kSteikLongDriveMotionMagicMaxAcceleration);
 		
-		Logger.getInstance().logRobotThread(Level.FINEST, "Drive to airship", driveToAirship);
+		Logger.getInstance().logRobotThread(Level.FINE, "Drive to airship", driveToAirship);
 		return new CANTalonRoutine(driveToAirship, true, 2);
 	}
 	/*

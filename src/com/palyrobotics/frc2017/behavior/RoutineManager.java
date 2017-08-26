@@ -13,6 +13,7 @@ import com.palyrobotics.frc2017.util.Subsystem;
 import com.palyrobotics.frc2017.util.logger.Logger;
 
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Handles the updating of commands by passing them to each running routine. <br />
@@ -31,7 +32,7 @@ public class RoutineManager implements Tappable {
 	 */
 	public void addNewRoutine(Routine newRoutine) {
 		if(newRoutine == null) {
-			System.err.println("Tried to add null routine to routine manager!");
+			Logger.getInstance().logRobotThread(Level.WARNING, "Tried to add null routine to routine manager!");
 			throw new NullPointerException();
 		}
 		routinesToAdd.add(newRoutine);
@@ -47,12 +48,12 @@ public class RoutineManager implements Tappable {
 	 * @return modified commands if needed
 	 */
 	public Commands reset(Commands commands) {
-		Logger.getInstance().logRobotThread("Routine manager reset");
+		Logger.getInstance().logRobotThread(Level.FINE, "Routine manager reset");
 		Commands output = commands.copy();
 		// Cancel all running routines
 		if(runningRoutines.size() != 0) {
 			for(Routine routine : runningRoutines) {
-				System.out.println("Canceling "+routine.getName());
+				Logger.getInstance().logRobotThread(Level.FINER, "Canceling "+routine.getName());
 				output = routine.cancel(output);
 			}
 		}
@@ -74,7 +75,7 @@ public class RoutineManager implements Tappable {
 		// Update all running routines
 		for(Routine routine : runningRoutines) {
 			if(routine.finished()) {
-				Logger.getInstance().logRobotThread("Routine "+routine.getName()+" finished, canceled");
+				Logger.getInstance().logRobotThread(Level.FINER, "Routine "+routine.getName()+" finished, canceled");
 //				System.out.println("Routine cancel called");
 				output = routine.cancel(output);
 				routinesToRemove.add(routine);
@@ -94,7 +95,7 @@ public class RoutineManager implements Tappable {
 			// combine running routines w/ new routine to check for shared subsystems
 			ArrayList<Routine> conflicts = conflictingRoutines(runningRoutines, newRoutine);
 			for(Routine routine : conflicts) {
-				Logger.getInstance().logRobotThread("Canceling routine "+routine.getName() +
+				Logger.getInstance().logRobotThread(Level.FINER, "Canceling routine "+routine.getName() +
 						" that conflicts with "+newRoutine.getName());
 				output = routine.cancel(output);
 //				System.out.println("Canceling routine " + routine.getName());
@@ -108,8 +109,7 @@ public class RoutineManager implements Tappable {
 		routinesToAdd.clear();
 
 		if (output.cancelCurrentRoutines) {
-			System.out.println("Cancel routine button");
-			Logger.getInstance().logRobotThread("Cancel routine button");
+			Logger.getInstance().logRobotThread(Level.FINE, "Cancel routine button");
 			output = this.reset(output);
 		} else if(!output.wantedRoutines.isEmpty()) {
 			// Routines requested by newly added routines
