@@ -1,4 +1,6 @@
 package com.palyrobotics.frc2017.subsystems.controllers;
+import java.util.logging.Level;
+
 import com.palyrobotics.frc2017.config.Constants;
 import com.palyrobotics.frc2017.config.Constants2016;
 import com.palyrobotics.frc2017.config.Gains;
@@ -8,6 +10,7 @@ import com.palyrobotics.frc2017.subsystems.Drive.DriveController;
 import com.palyrobotics.frc2017.util.CANTalonOutput;
 import com.palyrobotics.frc2017.util.Pose;
 import com.palyrobotics.frc2017.util.archive.DriveSignal;
+import com.palyrobotics.frc2017.util.logger.Logger;
 
 public class EncoderTurnAngleController implements DriveController {
 
@@ -22,9 +25,9 @@ public class EncoderTurnAngleController implements DriveController {
 	
 	public EncoderTurnAngleController(Pose priorSetpoint, double angle) {
 		leftTarget = priorSetpoint.leftEnc + (angle * Constants.kDriveInchesPerDegree * Constants.kDriveTicksPerInch);
-		System.out.println("Left target: "+leftTarget);
+		Logger.getInstance().logSubsystemThread(Level.FINEST, "Left target", leftTarget);
 		rightTarget = priorSetpoint.rightEnc - (angle * Constants.kDriveInchesPerDegree * Constants.kDriveTicksPerInch);
-		System.out.println("Right target: "+rightTarget);
+		Logger.getInstance().logSubsystemThread(Level.FINEST, "Right target", rightTarget);
 		cachedPose = priorSetpoint;
 		this.maxAccel = (Constants.kRobotName == Constants.RobotName.DERICA) ? Gains.kDericaTurnMotionMagicCruiseVelocity : (72 * Constants.kDriveSpeedUnitConversion);
 		this.maxVel = (Constants.kRobotName == Constants.RobotName.DERICA) ?  Gains.kDericaTurnMotionMagicCruiseAccel : (36 * Constants.kDriveSpeedUnitConversion);
@@ -45,7 +48,7 @@ public class EncoderTurnAngleController implements DriveController {
 	public boolean onTarget() {
 		if(Robot.getRobotState().leftSetpoint != leftOutput.getSetpoint() || Robot.getRobotState().rightSetpoint != rightOutput.getSetpoint() ||
 				Robot.getRobotState().leftControlMode != leftOutput.getControlMode() || Robot.getRobotState().rightControlMode != rightOutput.getControlMode()) {
-			System.out.println("Mismatched desired talon and actual talon states!");
+			Logger.getInstance().logSubsystemThread(Level.WARNING, "Mismatched desired talon and actual talon states!");
 			return false;
 		}
 
@@ -54,14 +57,14 @@ public class EncoderTurnAngleController implements DriveController {
 		double velocityTolerance = (Constants.kRobotName == Constants.RobotName.DERICA) ? Constants2016.kAcceptableDriveVelocityError : Constants.kAcceptableDriveVelocityError;
 
 		if(cachedPose == null) {
-			System.out.println("Cached pose is null");
+			Logger.getInstance().logSubsystemThread(Level.WARNING, "Cached pose is null");
 			return false;
 		}
 //		System.out.println("Left: " + Math.abs(leftTarget - cachedPose.leftEnc) + 
 //				"Right: " + Math.abs(rightTarget - cachedPose.rightEnc));
 		if(Math.abs(cachedPose.leftSpeed) < velocityTolerance && Math.abs(cachedPose.rightSpeed) < velocityTolerance &&
 				Math.abs(leftTarget - cachedPose.leftEnc) < positionTolerance && Math.abs(rightTarget - cachedPose.rightEnc) < positionTolerance) {
-			System.out.println("turn angle done");
+			Logger.getInstance().logSubsystemThread(Level.FINEST, "turn angle done");
 			return true;
 		}
 		else return false;

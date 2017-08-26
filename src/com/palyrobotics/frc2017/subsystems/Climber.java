@@ -1,11 +1,17 @@
 package com.palyrobotics.frc2017.subsystems;
 
+import java.util.logging.Level;
+
 import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.config.Gains;
 import com.palyrobotics.frc2017.config.RobotState;
 import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
+import com.palyrobotics.frc2017.robot.HardwareAdapter;
 import com.palyrobotics.frc2017.util.CANTalonOutput;
+import com.palyrobotics.frc2017.util.Subsystem;
+import com.palyrobotics.frc2017.util.archive.SubsystemLoop;
+import com.palyrobotics.frc2017.util.logger.Logger;
 
 /**
  * Subsystem that represents the climber
@@ -13,7 +19,7 @@ import com.palyrobotics.frc2017.util.CANTalonOutput;
  * Uses current draw to detect when starting and stopping climb
  * @author Ailyn Tong, Robbie Selwyn
  */
-public class Climber extends Subsystem{
+public class Climber extends Subsystem implements SubsystemLoop {
 	private static Climber instance = new Climber();
 	public static Climber getInstance() {
 		return instance;
@@ -86,17 +92,17 @@ public class Climber extends Subsystem{
 			if (mState == Climber.ClimberState.CLIMBING_ENCODER_DISTANCE) {
 				// Too much current draw (stalling)
 				if (robotState.climberCurrentDraw > kStallingTriggerCurrent) {
-					System.out.println("Climber stalling, switching to idle");
+					Logger.getInstance().logSubsystemThread(Level.FINEST, "Climber stalling, switching to idle");
 					mState = ClimberState.IDLE;
 				} 
 				// Encoder not shifting enough
 				else if (robotState.climberEncoder - mPrevEnc < kMinimumDeltaEnc) {
-					System.out.println("Climber stuck, switching to idle");
+					Logger.getInstance().logSubsystemThread(Level.FINEST, "Climber stuck, switching to idle");
 					mState = ClimberState.IDLE;
 				}
 				// Reached end
 				else if (robotState.climberEncoder > mTarget) {
-					System.out.println("Climb complete, switching to idle");
+					Logger.getInstance().logSubsystemThread(Level.FINEST, "Climb complete, switching to idle");
 					mState = ClimberState.IDLE;
 				}
 				else {
@@ -107,7 +113,7 @@ public class Climber extends Subsystem{
 			else {
 				// Detect rope catch using current draw
 				if (robotState.climberCurrentDraw > kClimbingTriggerCurrent) {
-					System.out.println("Rope has been caught, swithing to encoder climb");
+					Logger.getInstance().logSubsystemThread(Level.FINEST, "Rope has been caught, swithing to encoder climb");
 					mState = ClimberState.CLIMBING_ENCODER_DISTANCE;
 				} else {
 					mState = commands.wantedClimberState;

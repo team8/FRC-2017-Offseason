@@ -1,11 +1,20 @@
 package com.palyrobotics.frc2017.config;
 
-import com.palyrobotics.frc2017.behavior.Routine;
-import com.palyrobotics.frc2017.subsystems.*;
-import com.palyrobotics.frc2017.util.archive.DriveSignal;
-
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.logging.Level;
+
+import com.palyrobotics.frc2017.behavior.Routine;
+import com.palyrobotics.frc2017.util.archive.DriveSignal;
+import com.palyrobotics.frc2017.util.logger.Logger;
+import com.palyrobotics.frc2017.subsystems.Climber;
+import com.palyrobotics.frc2017.subsystems.Drive;
+import com.palyrobotics.frc2017.subsystems.Flippers;
+import com.palyrobotics.frc2017.subsystems.Intake;
+import com.palyrobotics.frc2017.subsystems.Slider;
+import com.palyrobotics.frc2017.subsystems.Spatula;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * Commands represent the desired setpoints and subsystem states for the robot. <br />
@@ -20,6 +29,8 @@ public class Commands {
 
 	// Store WantedStates for each subsystem state machine
 	public Drive.DriveState wantedDriveState = Drive.DriveState.NEUTRAL;
+	public Flippers.FlipperSignal wantedFlipperSignal = new Flippers.FlipperSignal(
+			DoubleSolenoid.Value.kForward, DoubleSolenoid.Value.kForward);
 	public Slider.SliderState wantedSliderState = Slider.SliderState.IDLE;
 	public Spatula.SpatulaState wantedSpatulaState = Spatula.SpatulaState.UP;
 	public Intake.IntakeState wantedIntakeState = Intake.IntakeState.IDLE;
@@ -28,7 +39,7 @@ public class Commands {
 	public void addWantedRoutine(Routine wantedRoutine) {
 		for(Routine routine : wantedRoutines) {
 			if(routine.getClass().equals(wantedRoutine.getClass())) {
-				System.out.println("tried to add duplicate routine!" + routine.getName());
+				Logger.getInstance().logRobotThread(Level.WARNING, "tried to add duplicate routine!" + routine.getName());
 				return;
 			}
 		}
@@ -62,8 +73,7 @@ public class Commands {
 	 * @author Nihar
 	 */
 	public static class JoystickInput {
-
-		public class XboxInput extends JoystickInput {
+		public static class XboxInput extends JoystickInput {
 			public double leftX, leftY, rightX, rightY;
 			public XboxInput(double leftX, double leftY, double rightX, double rightY) {
 				super(leftX, leftY, false);
@@ -98,6 +108,7 @@ public class Commands {
 	public Commands copy() {
 		Commands copy = new Commands();
 		copy.wantedDriveState = this.wantedDriveState;
+		copy.wantedFlipperSignal = this.wantedFlipperSignal;
 		copy.wantedSpatulaState = this.wantedSpatulaState;
 		copy.wantedSliderState = this.wantedSliderState;
 		copy.wantedIntakeState = this.wantedIntakeState;
