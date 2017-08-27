@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		System.out.println("Start robotInit() for "+Constants.kRobotName.toString());
 		DashboardManager.getInstance().robotInit();
-//		AndroidConnectionHelper.getInstance().start();
+		AndroidConnectionHelper.getInstance().start();
 		System.out.println("Finished starting");
 		mLogger.setFileName("8/20 testing");
 		mLogger.start();
@@ -90,7 +90,7 @@ public class Robot extends IterativeRobot {
 
 		mHardwareUpdater.initHardware();
 		System.out.println("Auto: "+AutoModeSelector.getInstance().getAutoMode().toString());
-//		AndroidConnectionHelper.getInstance().StartVisionApp();
+		AndroidConnectionHelper.getInstance().StartVisionApp();
 		System.out.println("End robotInit()");
 		mLogger.logRobotThread("End robotInit()");
 	}

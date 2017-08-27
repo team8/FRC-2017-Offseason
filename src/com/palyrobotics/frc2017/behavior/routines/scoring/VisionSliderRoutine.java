@@ -47,11 +47,11 @@ public class VisionSliderRoutine extends Routine {
 		} else {
 			visionSetpoint += offset;
 		}
-		System.out.println("Vision setpoint pre min/max: "+visionSetpoint);
+//		System.out.println("Vision setpoint pre min/max: "+visionSetpoint);
 		visionSetpoint = Math.max(-7, Math.min(visionSetpoint, 7));
-		if (commands.robotSetpoints.sliderCustomSetpoint.isPresent()) {
-			System.out.println("Vision setpoint: "+visionSetpoint);
-		}
+//		if (commands.robotSetpoints.sliderCustomSetpoint.isPresent()) {
+//			System.out.println("Vision setpoint: "+visionSetpoint);
+//		}
 		commands.robotSetpoints.sliderCustomSetpoint =
 				Optional.of(visionSetpoint * Constants.kSliderRevolutionsPerInch);
 		switch(mState) {

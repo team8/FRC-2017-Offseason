@@ -28,6 +28,7 @@ public class CANTalonRoutine extends Routine {
 		this.mSignal = controller;
 		this.timeout = 1 << 30;
 		this.relativeSetpoint = relativeSetpoint;
+		this.robotState = Robot.getRobotState();
 	}
 
 	/*
@@ -40,6 +41,7 @@ public class CANTalonRoutine extends Routine {
 		this.mSignal = controller;
 		this.relativeSetpoint = relativeSetpoint;
 		this.timeout = timeout * 1000;
+		this.robotState = Robot.getRobotState();
 	}
 
 	@Override

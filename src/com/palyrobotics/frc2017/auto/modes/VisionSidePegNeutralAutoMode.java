@@ -37,7 +37,7 @@ public class VisionSidePegNeutralAutoMode extends AutoModeBase {
 	private final TrajectorySidePostVariant mPostVariant;
 	private Path mPath, mPostPath;
 	
-	private final boolean mUseGyro = true;
+	private final boolean mUseGyro = false;
 	private boolean mPostInverted;
 	
 	private final Gains mShortGains;
@@ -148,7 +148,9 @@ public class VisionSidePegNeutralAutoMode extends AutoModeBase {
 //		scoreSetpoint += 2;
 		
 		double scoreSetpoint = AndroidConnectionHelper.getInstance().getZDist() * Constants.kDriveTicksPerInch;
-		
+
+		System.out.println("Z DISTANCE: " + scoreSetpoint);
+
 		DriveSignal driveScore = DriveSignal.getNeutralSignal();
 		driveScore.leftMotor.setMotionMagic(scoreSetpoint, mShortGains,
 				Gains.kSteikShortDriveMotionMagicCruiseVelocity, Gains.kSteikShortDriveMotionMagicMaxAcceleration);
