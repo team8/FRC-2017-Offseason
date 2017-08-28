@@ -15,7 +15,8 @@ import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
 
 public class VisionSliderRoutine extends Routine {
 	private double startTime = 0;
-	
+	double visionSetpoint = 0;
+
 	// Used to make sure vision setpoint is only sent once
 	private enum VisionPositioningState {
 		START, SENT
@@ -34,33 +35,36 @@ public class VisionSliderRoutine extends Routine {
 	public Commands update(Commands commands) {
 		commands.robotSetpoints.sliderSetpoint = SliderTarget.CUSTOM;
 		commands.wantedSpatulaState = Spatula.SpatulaState.UP;
-		double visionSetpoint = AndroidConnectionHelper.getInstance().getXDist();
-		// out of range of motion, probably false positive, might be on left side
-		if (visionSetpoint >= 1.5) {
-			visionSetpoint = -7;
-		} 
-		else if (visionSetpoint <= -7-offset) {
-			visionSetpoint = -7;
-		} // extend motion
-		else if (visionSetpoint < 0) {
-			visionSetpoint += offset;
-		} else {
-			visionSetpoint += offset;
-		}
-//		System.out.println("Vision setpoint pre min/max: "+visionSetpoint);
-		visionSetpoint = Math.max(-7, Math.min(visionSetpoint, 7));
-//		if (commands.robotSetpoints.sliderCustomSetpoint.isPresent()) {
-//			System.out.println("Vision setpoint: "+visionSetpoint);
-//		}
-		commands.robotSetpoints.sliderCustomSetpoint =
-				Optional.of(visionSetpoint * Constants.kSliderRevolutionsPerInch);
+
 		switch(mState) {
 		case START:
 			commands.wantedSliderState = Slider.SliderState.CUSTOM_POSITIONING;
+
+			visionSetpoint = AndroidConnectionHelper.getInstance().getXDist();
+			// out of range of motion, probably false positive, might be on left side
+			if (visionSetpoint >= 1.5) {
+				visionSetpoint = -7;
+			}
+			else if (visionSetpoint <= -7-offset) {
+				visionSetpoint = -7;
+			} // extend motion
+			else if (visionSetpoint < 0) {
+				visionSetpoint += offset;
+			} else {
+				visionSetpoint += offset;
+			}
+//		System.out.println("Vision setpoint pre min/max: "+visionSetpoint);
+			visionSetpoint = Math.max(-7, Math.min(visionSetpoint, 7));
+
+			commands.robotSetpoints.sliderCustomSetpoint =
+					Optional.of(visionSetpoint * Constants.kSliderRevolutionsPerInch);
 			mState = VisionPositioningState.SENT;
+			System.out.println("custom slider routine starting");
 			break;
 		case SENT:
 			commands.wantedSliderState = Slider.SliderState.CUSTOM_POSITIONING;
+			commands.robotSetpoints.sliderCustomSetpoint = Optional.of(visionSetpoint * Constants.kSliderRevolutionsPerInch);
+			System.out.println("slider custom setpoint: " + commands.robotSetpoints.sliderCustomSetpoint);
 			break;
 		}		
 		return commands;

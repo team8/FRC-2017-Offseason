@@ -155,6 +155,10 @@ public class VisionServerThread implements Runnable{
 		// Initialize data
 		byte[] data = m_androidServer.getData();
 
+		if(data == null || data.length == 0){
+			System.out.println("Vision Video Data is Null");
+		}
+
 		// Write Image to JPEG stream
 		try {
 			m_mjpegServer.handle(data);

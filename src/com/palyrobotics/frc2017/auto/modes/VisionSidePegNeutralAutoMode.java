@@ -93,21 +93,21 @@ public class VisionSidePegNeutralAutoMode extends AutoModeBase {
 		System.out.println("Starting "+this.toString()+" Auto Mode");
 		Logger.getInstance().logRobotThread("Starting "+this.toString()+" Auto Mode");
 
-		if (!AndroidConnectionHelper.getInstance().isServerStarted() || !AndroidConnectionHelper.getInstance().isNexusConnected()) {
-			System.out.println("Vision server not started!");
-			Logger.getInstance().logRobotThread("Vision server not detected, fallback to default side peg");
-			SidePegAutoMode backup = new SidePegAutoMode(mVariant, SideAutoPostVariant.BACKUP);
-			backup.prestart();
-			mSequentialRoutine = backup.getRoutine();
-			return;
-		}
+//		if (!AndroidConnectionHelper.getInstance().isServerStarted() || !AndroidConnectionHelper.getInstance().isNexusConnected()) {
+//			System.out.println("Vision server not started!");
+//			Logger.getInstance().logRobotThread("Vision server not detected, fallback to default side peg");
+//			SidePegAutoMode backup = new SidePegAutoMode(mVariant, SideAutoPostVariant.BACKUP);
+//			backup.prestart();
+//			mSequentialRoutine = backup.getRoutine();
+//			return;
+//		}
 		
 		ArrayList<Routine> sequence = new ArrayList<>();
 		
 		sequence.add(new DriveSensorResetRoutine());
 		ArrayList<Routine> parallelSlider = new ArrayList<>();
 		parallelSlider.add(new CustomPositioningSliderRoutine(-7)); // move the slider to the side
-		parallelSlider.add(new DrivePathRoutine(mPath, mTrajectoryGains, mUseGyro, false)); 
+		parallelSlider.add(new DrivePathRoutine(mPath, mTrajectoryGains, mUseGyro, false));
 		// NOTE: The above routine should take the robot to be in front of the peg. Not on the peg.
 
 		
@@ -147,9 +147,13 @@ public class VisionSidePegNeutralAutoMode extends AutoModeBase {
 //		double scoreSetpoint = bonusDistance*Constants.kDriveTicksPerInch;
 //		scoreSetpoint += 2;
 		
-		double scoreSetpoint = AndroidConnectionHelper.getInstance().getZDist() * Constants.kDriveTicksPerInch;
+		double scoreSetpoint = AndroidConnectionHelper.getInstance().getZDist();// * Constants.kDriveTicksPerInch;
+		double visionSetpoint = AndroidConnectionHelper.getInstance().getXDist();
 
 		System.out.println("Z DISTANCE: " + scoreSetpoint);
+		System.out.println("X DISTANCE: " + visionSetpoint);
+
+		scoreSetpoint = scoreSetpoint * Constants.kDriveTicksPerInch;
 
 		DriveSignal driveScore = DriveSignal.getNeutralSignal();
 		driveScore.leftMotor.setMotionMagic(scoreSetpoint, mShortGains,
@@ -157,7 +161,8 @@ public class VisionSidePegNeutralAutoMode extends AutoModeBase {
 		driveScore.rightMotor.setMotionMagic(scoreSetpoint, mShortGains,
 				Gains.kSteikShortDriveMotionMagicCruiseVelocity, Gains.kSteikShortDriveMotionMagicMaxAcceleration);
 		ArrayList<Routine> scoreSequence = new ArrayList<>();
-		scoreSequence.add(new VisionSliderRoutine());
+		scoreSequence.add(new CustomPositioningSliderRoutine(visionSetpoint));
+//		scoreSequence.add(new VisionSliderRoutine());
 		scoreSequence.add(new CANTalonRoutine(driveScore, true));
 		return new SequentialRoutine(scoreSequence);
 	}
@@ -226,6 +231,6 @@ public class VisionSidePegNeutralAutoMode extends AutoModeBase {
 
 	@Override
 	public String toString() {
-		return "TrajectorySidePegAuto"+mVariant+mPostVariant;
+		return "VisionTrajectorySidePegAuto"+mVariant+mPostVariant;
 	}
 }

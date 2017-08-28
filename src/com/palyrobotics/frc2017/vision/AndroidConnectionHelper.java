@@ -412,7 +412,6 @@ public class AndroidConnectionHelper implements Runnable{
 				synchronized (m_android_lock) {
 					if (state.equals("STREAMING")) {
 						// Get image data
-						System.out.println("REEEEEEEEEEEEEEEEEEEEEEEEEEE");
 						Number
 							data_x = (Number)json.get("x_displacement"),
 							data_z = (Number)json.get("z_displacement");
@@ -420,7 +419,7 @@ public class AndroidConnectionHelper implements Runnable{
 							this.m_x_dist = data_x.doubleValue();
 						if (data_z != null)
 							this.m_z_dist = data_z.doubleValue();
-						System.out.println("<x,z>: <"+this.m_x_dist+", "+this.m_z_dist+">");
+						//System.out.println("<x,z>: <"+this.m_x_dist+", "+this.m_z_dist+">");
 					}
 					m_androidState = state;
 				}

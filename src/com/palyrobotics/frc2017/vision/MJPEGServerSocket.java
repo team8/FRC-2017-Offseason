@@ -177,8 +177,8 @@ public class MJPEGServerSocket implements Runnable{
 
 			// Read HTTP headers and parse out the route.
 			reader = new BufferedReader(new InputStreamReader(m_client.getInputStream()));
-			String line;
-			while (!(line = reader.readLine()).isEmpty()) {
+			String line = reader.readLine();
+			while (line != null && !line.isEmpty()) {
 //				System.out.println(line);
 				if (line.startsWith("GET /")) {
 					int start = line.indexOf('/') + 1;
@@ -192,12 +192,14 @@ public class MJPEGServerSocket implements Runnable{
 			output = new PrintStream(m_client.getOutputStream());
 
 			// Prepare the content to send.
-			if (null == route) {
+			if (route == null) {
 				writeServerError(output);
+				System.out.println("VISION ERROR, NO ROUTES");
 				return;
 			}
-			if (null == data) {
+			if (data == null) {
 				writeServerError(output);
+				System.out.println("VISION ERROR, NO DATA");
 				return;
 			}
 

@@ -54,6 +54,8 @@ public class CustomPositioningSliderRoutine extends Routine {
 	public Commands update(Commands commands) {
 		commands.robotSetpoints.sliderSetpoint = Slider.SliderTarget.CUSTOM;
 		commands.robotSetpoints.sliderCustomSetpoint = Optional.of(target * Constants.kSliderRevolutionsPerInch);
+		System.out.println("SLIDER CUSTOM POSITIONING AT " + commands.robotSetpoints.sliderCustomSetpoint);
+		System.out.println("SLIDER ERROR: " + Robot.getRobotState().sliderClosedLoopError);
 		updated = true;
 		switch(mState) {
 		case MOVING:
