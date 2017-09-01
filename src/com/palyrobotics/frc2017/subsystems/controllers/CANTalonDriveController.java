@@ -42,13 +42,13 @@ public class CANTalonDriveController implements Drive.DriveController {
 		
 		setCanTableString(new double[] {
 				
-				(drivePose.leftTrajPos.isPresent()) ? drivePose.leftTrajPos.get() : 0,
-				(drivePose.leftTrajVel.isPresent()) ? drivePose.leftTrajVel.get() : 0,
+				(drivePose.leftMotionMagicPos.isPresent()) ? drivePose.leftMotionMagicPos.get() : 0,
+				(drivePose.leftMotionMagicVel.isPresent()) ? drivePose.leftMotionMagicVel.get() : 0,
 				drivePose.leftEnc,
 				drivePose.leftSpeed,
 				(drivePose.leftError.isPresent()) ? drivePose.leftError.get() : 0,
-				(drivePose.rightTrajPos.isPresent()) ? drivePose.rightTrajPos.get() : 0,
-				(drivePose.rightTrajVel.isPresent()) ? drivePose.rightTrajVel.get() : 0,
+				(drivePose.rightMotionMagicPos.isPresent()) ? drivePose.rightMotionMagicPos.get() : 0,
+				(drivePose.rightMotionMagicVel.isPresent()) ? drivePose.rightMotionMagicVel.get() : 0,
 				drivePose.rightEnc,
 				drivePose.rightSpeed,
 				(drivePose.rightError.isPresent()) ? drivePose.rightError.get() : 0,

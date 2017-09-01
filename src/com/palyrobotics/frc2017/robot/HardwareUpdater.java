@@ -296,21 +296,21 @@ class HardwareUpdater {
 		robotState.drivePose.rightSpeed = rightMasterTalon.getSpeed();
 		
 		if (leftMasterTalon.getControlMode() == TalonControlMode.MotionMagic) {
-			robotState.drivePose.leftTrajPos = Optional.of(leftMasterTalon.getMotionMagicActTrajPosition());
-			robotState.drivePose.leftTrajVel = Optional.of(leftMasterTalon.getMotionMagicActTrajVelocity());
+			robotState.drivePose.leftMotionMagicPos = Optional.of(leftMasterTalon.getMotionMagicActTrajPosition());
+			robotState.drivePose.leftMotionMagicVel = Optional.of(leftMasterTalon.getMotionMagicActTrajVelocity());
 		}
 		else {
-			robotState.drivePose.leftTrajPos = Optional.empty();
-			robotState.drivePose.leftTrajVel = Optional.empty();
+			robotState.drivePose.leftMotionMagicPos = Optional.empty();
+			robotState.drivePose.leftMotionMagicVel = Optional.empty();
 		}
 		
 		if (rightMasterTalon.getControlMode() == TalonControlMode.MotionMagic) {
-			robotState.drivePose.rightTrajPos = Optional.of(rightMasterTalon.getMotionMagicActTrajPosition());
-			robotState.drivePose.rightTrajVel = Optional.of(rightMasterTalon.getMotionMagicActTrajVelocity());
+			robotState.drivePose.rightMotionMagicPos = Optional.of(rightMasterTalon.getMotionMagicActTrajPosition());
+			robotState.drivePose.rightMotionMagicVel = Optional.of(rightMasterTalon.getMotionMagicActTrajVelocity());
 		}
 		else {
-			robotState.drivePose.rightTrajPos = Optional.empty();
-			robotState.drivePose.rightTrajVel = Optional.empty();
+			robotState.drivePose.rightMotionMagicPos = Optional.empty();
+			robotState.drivePose.rightMotionMagicVel = Optional.empty();
 		}
 		
 		if (leftMasterTalon.getControlMode().isPID() || leftMasterTalon.getControlMode() == TalonControlMode.MotionMagic) {

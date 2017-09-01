@@ -23,10 +23,10 @@ public class Pose {
 	public Optional<Double> leftError;
 	public Optional<Double> rightError;
 	
-	public Optional<Double> leftTrajPos = Optional.empty();
-	public Optional<Double> rightTrajPos = Optional.empty();
-	public Optional<Double> leftTrajVel = Optional.empty();
-	public Optional<Double> rightTrajVel = Optional.empty();
+	public Optional<Double> leftMotionMagicPos = Optional.empty();
+	public Optional<Double> rightMotionMagicPos = Optional.empty();
+	public Optional<Double> leftMotionMagicVel = Optional.empty();
+	public Optional<Double> rightMotionMagicVel = Optional.empty();
 
 
 	public Pose() {
@@ -78,10 +78,10 @@ public class Pose {
 		copy.rightSpeed = this.rightSpeed;
 		copy.leftError = (this.leftError.isPresent()) ? Optional.of(this.leftError.get()) : Optional.empty();
 		copy.rightError = (this.rightError.isPresent()) ? Optional.of(this.rightError.get()) : Optional.empty();
-		copy.leftTrajPos = (this.leftTrajPos.isPresent()) ? Optional.of(this.leftTrajPos.get()) : Optional.empty();
-		copy.rightTrajPos = (this.rightTrajPos.isPresent()) ? Optional.of(this.rightTrajPos.get()) : Optional.empty();
-		copy.leftTrajVel = (this.leftTrajVel.isPresent()) ? Optional.of(this.leftTrajVel.get()) : Optional.empty();
-		copy.rightTrajVel = (this.rightTrajVel.isPresent()) ? Optional.of(this.rightTrajVel.get()) : Optional.empty();
+		copy.leftMotionMagicPos = (this.leftMotionMagicPos.isPresent()) ? Optional.of(this.leftMotionMagicPos.get()) : Optional.empty();
+		copy.rightMotionMagicPos = (this.rightMotionMagicPos.isPresent()) ? Optional.of(this.rightMotionMagicPos.get()) : Optional.empty();
+		copy.leftMotionMagicVel = (this.leftMotionMagicVel.isPresent()) ? Optional.of(this.leftMotionMagicVel.get()) : Optional.empty();
+		copy.rightMotionMagicVel = (this.rightMotionMagicVel.isPresent()) ? Optional.of(this.rightMotionMagicVel.get()) : Optional.empty();
 
 		return copy;
 	}
@@ -97,9 +97,9 @@ public class Pose {
 				this.rightError.equals(other.rightError) &&
 				this.heading == other.heading &&
 				this.headingVelocity == other.headingVelocity &&
-				this.leftTrajPos == other.leftTrajPos &&
-				this.rightTrajPos == other.rightTrajPos &&
-				this.leftTrajVel == other.leftTrajVel &&
-				this.rightTrajVel == other.rightTrajVel;
+				this.leftMotionMagicPos == other.leftMotionMagicPos &&
+				this.rightMotionMagicPos == other.rightMotionMagicPos &&
+				this.leftMotionMagicVel == other.leftMotionMagicVel &&
+				this.rightMotionMagicVel == other.rightMotionMagicVel;
 	}
 }
