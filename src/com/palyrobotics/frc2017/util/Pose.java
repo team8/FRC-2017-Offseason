@@ -22,6 +22,12 @@ public class Pose {
 
 	public Optional<Double> leftError;
 	public Optional<Double> rightError;
+	
+	public Optional<Double> leftTrajPos = Optional.empty();
+	public Optional<Double> rightTrajPos = Optional.empty();
+	public Optional<Double> leftTrajVel = Optional.empty();
+	public Optional<Double> rightTrajVel = Optional.empty();
+
 
 	public Pose() {
 		this.leftEnc = 0; this.leftEncVelocity = 0; this.leftSpeed = 0;
@@ -39,10 +45,10 @@ public class Pose {
 		this.rightEnc = rightEnc;
 		this.rightEncVelocity = rightEncVelocity;
 		this.rightSpeed = rightSpeed;
-		this.leftError = Optional.of(leftError);
-		this.rightError = Optional.of(rightError);
 		this.heading = heading;
 		this.headingVelocity = headingVelocity;
+		this.leftError = Optional.of(leftError);
+		this.rightError = Optional.of(rightError);
 	}
 	public Pose(double leftEnc, double leftEncVelocity, double leftSpeed,
 				double rightEnc, double rightEncVelocity, double rightSpeed,
@@ -72,6 +78,11 @@ public class Pose {
 		copy.rightSpeed = this.rightSpeed;
 		copy.leftError = (this.leftError.isPresent()) ? Optional.of(this.leftError.get()) : Optional.empty();
 		copy.rightError = (this.rightError.isPresent()) ? Optional.of(this.rightError.get()) : Optional.empty();
+		copy.leftTrajPos = (this.leftTrajPos.isPresent()) ? Optional.of(this.leftTrajPos.get()) : Optional.empty();
+		copy.rightTrajPos = (this.rightTrajPos.isPresent()) ? Optional.of(this.rightTrajPos.get()) : Optional.empty();
+		copy.leftTrajVel = (this.leftTrajVel.isPresent()) ? Optional.of(this.leftTrajVel.get()) : Optional.empty();
+		copy.rightTrajVel = (this.rightTrajVel.isPresent()) ? Optional.of(this.rightTrajVel.get()) : Optional.empty();
+
 		return copy;
 	}
 	
@@ -85,6 +96,10 @@ public class Pose {
 				this.leftError.equals(other.leftError) &&
 				this.rightError.equals(other.rightError) &&
 				this.heading == other.heading &&
-				this.headingVelocity == other.headingVelocity;
+				this.headingVelocity == other.headingVelocity &&
+				this.leftTrajPos == other.leftTrajPos &&
+				this.rightTrajPos == other.rightTrajPos &&
+				this.leftTrajVel == other.leftTrajVel &&
+				this.rightTrajVel == other.rightTrajVel;
 	}
 }

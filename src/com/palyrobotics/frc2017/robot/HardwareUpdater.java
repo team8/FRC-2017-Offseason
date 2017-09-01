@@ -294,12 +294,31 @@ class HardwareUpdater {
 		robotState.drivePose.rightEnc = rightMasterTalon.getPosition();
 		robotState.drivePose.rightEncVelocity = rightMasterTalon.getEncVelocity();
 		robotState.drivePose.rightSpeed = rightMasterTalon.getSpeed();
-		if (leftMasterTalon.getControlMode().isPID()) {
+		
+		if (leftMasterTalon.getControlMode() == TalonControlMode.MotionMagic) {
+			robotState.drivePose.leftTrajPos = Optional.of(leftMasterTalon.getMotionMagicActTrajPosition());
+			robotState.drivePose.leftTrajVel = Optional.of(leftMasterTalon.getMotionMagicActTrajVelocity());
+		}
+		else {
+			robotState.drivePose.leftTrajPos = Optional.empty();
+			robotState.drivePose.leftTrajVel = Optional.empty();
+		}
+		
+		if (rightMasterTalon.getControlMode() == TalonControlMode.MotionMagic) {
+			robotState.drivePose.rightTrajPos = Optional.of(rightMasterTalon.getMotionMagicActTrajPosition());
+			robotState.drivePose.rightTrajVel = Optional.of(rightMasterTalon.getMotionMagicActTrajVelocity());
+		}
+		else {
+			robotState.drivePose.rightTrajPos = Optional.empty();
+			robotState.drivePose.rightTrajVel = Optional.empty();
+		}
+		
+		if (leftMasterTalon.getControlMode().isPID() || leftMasterTalon.getControlMode() == TalonControlMode.MotionMagic) {
 			robotState.drivePose.leftError = Optional.of(leftMasterTalon.getError());
 		} else {
 			robotState.drivePose.leftError = Optional.empty();
 		}
-		if (rightMasterTalon.getControlMode().isPID()) {
+		if (rightMasterTalon.getControlMode().isPID() || rightMasterTalon.getControlMode() == TalonControlMode.MotionMagic) {
 			robotState.drivePose.rightError = Optional.of(rightMasterTalon.getError());
 		} else {
 			robotState.drivePose.rightError = Optional.empty();

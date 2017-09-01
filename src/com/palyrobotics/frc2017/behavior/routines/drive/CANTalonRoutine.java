@@ -4,15 +4,11 @@ import com.ctre.CANTalon;
 import com.palyrobotics.frc2017.behavior.Routine;
 import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.config.RobotState;
-import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.robot.Robot;
 import com.palyrobotics.frc2017.subsystems.Drive;
 import com.palyrobotics.frc2017.subsystems.Subsystem;
 import com.palyrobotics.frc2017.subsystems.controllers.CANTalonDriveController;
-import com.palyrobotics.frc2017.util.CANTalonOutput;
 import com.palyrobotics.frc2017.util.archive.DriveSignal;
-
-import java.util.Optional;
 
 /**
  * Created by Nihar on 2/12/17.
@@ -31,7 +27,6 @@ public class CANTalonRoutine extends Routine {
 		this.mSignal = controller;
 		this.timeout = 1 << 30;
 		this.relativeSetpoint = relativeSetpoint;
-		this.robotState = Robot.getRobotState();
 	}
 
 	/*
@@ -81,30 +76,10 @@ public class CANTalonRoutine extends Routine {
 		Commands output = commands.copy();
 		output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
 
-		setCanTableString(new double[] {
-				Robot.getRobotState().drivePose.leftError.get(),
-				Robot.getRobotState().drivePose.leftSpeed,
-				Robot.getRobotState().drivePose.leftEnc
-		});
-
-		DashboardManager.getInstance().updateCANTable(getCanTableString());
-
 		return output;
 	}
 
 
-	private String canTableString = "";
-	private void setCanTableString(double[] a) {
-		canTableString = "";
-		for(int i = 0; i < a.length-1; i++) {
-			canTableString = canTableString + Double.toString(a[i]) + ", ";
-		}
-		canTableString = canTableString + Double.toString(a[a.length-1]);
-	}
-
-	public String getCanTableString() {
-		return this.canTableString;
-	}
 
 	@Override
 	public Commands cancel(Commands commands) {
