@@ -107,7 +107,7 @@ public class VisionSidePegNeutralAutoMode extends AutoModeBase {
 		sequence.add(new DriveSensorResetRoutine());
 		ArrayList<Routine> parallelSlider = new ArrayList<>();
 		parallelSlider.add(new CustomPositioningSliderRoutine(-7)); // move the slider to the side
-		parallelSlider.add(new DrivePathRoutine(mPath, mTrajectoryGains, mUseGyro, false));
+//		parallelSlider.add(new DrivePathRoutine(mPath, mTrajectoryGains, mUseGyro, false));
 		// NOTE: The above routine should take the robot to be in front of the peg. Not on the peg.
 
 		
@@ -147,8 +147,8 @@ public class VisionSidePegNeutralAutoMode extends AutoModeBase {
 //		double scoreSetpoint = bonusDistance*Constants.kDriveTicksPerInch;
 //		scoreSetpoint += 2;
 		
-		double scoreSetpoint = AndroidConnectionHelper.getInstance().getZDist();// * Constants.kDriveTicksPerInch;
-		double visionSetpoint = AndroidConnectionHelper.getInstance().getXDist();
+		double scoreSetpoint = 10;//AndroidConnectionHelper.getInstance().getZDist();// * Constants.kDriveTicksPerInch;
+		double visionSetpoint = 0;//AndroidConnectionHelper.getInstance().getXDist();
 
 		System.out.println("Z DISTANCE: " + scoreSetpoint);
 		System.out.println("X DISTANCE: " + visionSetpoint);
