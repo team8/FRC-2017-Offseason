@@ -87,12 +87,17 @@ public class Logger {
 		}
 		else if (os.startsWith("Windows")) {
 			filePath = "C:" + File.separatorChar + "logs" + File.separatorChar + fileName;
-		} else {
+		} 
+		else if (os.startsWith("Unix")){
 			// Pray that this is a roborio
 			// TODO: Maybe find the exact OS name
 			filePath = "/home/lvuser/logs/" + fileName;
 //			// TODO:
 //			rioLog = new File("/var/local/natinst/log/FRC_UserProgram.log");
+		}
+		else {
+			filePath = "/home/lvuser/logs/" + fileName;
+			System.err.println("Unrecognized OS; defaulting to Unix system");
 		}
 		mainLog = new File(filePath+File.separatorChar+"log.log");
 		while (mainLog.exists()) {
@@ -294,7 +299,7 @@ public class Logger {
 			}
 			isEnabled = false;
 		}
-		if(os.startsWith("NI")) {
+		if(os.startsWith("Unix")) {
 			sendLog(mainLog);
 		}
 //		// Try to copy riolog to logging directory if it exists
