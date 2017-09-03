@@ -1,5 +1,7 @@
 package com.palyrobotics.frc2017.subsystems.controllers;
 
+import java.util.logging.Level;
+
 import com.palyrobotics.frc2017.config.Constants;
 import com.palyrobotics.frc2017.config.Gains;
 import com.palyrobotics.frc2017.config.RobotState;
@@ -40,7 +42,7 @@ public class TrajectoryFollowingController implements Drive.DriveController {
 		// set goals and paths
 		if (path == null) {
 			mIllegalPath = true;
-			System.out.println("No path!");
+			Logger.getInstance().logSubsystemThread(Level.SEVERE, "No path!");
 			return;
 		} else {
 			mIllegalPath = false;
@@ -77,8 +79,7 @@ public class TrajectoryFollowingController implements Drive.DriveController {
 			gyroError = ChezyMath.getDifferenceInAngleRadians(Math.toRadians(state.drivePose.heading), mLeftFollower.getHeading());
 			gyroError = Math.toDegrees(gyroError);
 			double gyroCorrection = headingPID.calculate(gyroError);
-			System.out.println("Gyro correction: "+gyroCorrection);
-			Logger.getInstance().logSubsystemThread(gyroCorrection);
+			Logger.getInstance().logSubsystemThread(Level.FINEST, "Gyro correction", gyroCorrection);
 			driveSignal.leftMotor.setVoltage((leftPower+gyroCorrection)*12);
 			driveSignal.rightMotor.setVoltage((rightPower-gyroCorrection)*12);
 		}

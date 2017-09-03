@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 import java.util.Optional;
+import java.util.logging.Level;
 
 /**
  * Should only be used in robot package.
@@ -107,7 +108,7 @@ class HardwareUpdater {
 	 * Initialize all hardware
 	 */
 	void initHardware() {
-		Logger.getInstance().logRobotThread("Init hardware");
+		Logger.getInstance().logRobotThread(Level.FINEST, "Init hardware");
 		configureTalons(true);
 		AHRS gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
 		if (gyro != null) {
@@ -124,7 +125,7 @@ class HardwareUpdater {
 	}
 	
 	void disableTalons() {
-		Logger.getInstance().logRobotThread("Disabling talons");
+		Logger.getInstance().logRobotThread(Level.FINEST, "Disabling talons");
 		HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon.disable();
 		HardwareAdapter.getInstance().getDrivetrain().leftSlave1Talon.disable();
 		HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.disable();

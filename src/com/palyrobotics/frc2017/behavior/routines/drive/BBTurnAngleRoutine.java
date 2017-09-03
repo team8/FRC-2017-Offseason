@@ -26,7 +26,6 @@ public class BBTurnAngleRoutine extends Routine {
 	
 	@Override
 	public void start() {
-		System.out.println("start bb turn angle");
 		drive.setNeutral();
 		mState = GyroBBState.START;
 		startTime = System.currentTimeMillis();
