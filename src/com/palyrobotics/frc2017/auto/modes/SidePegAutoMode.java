@@ -15,6 +15,7 @@ import com.palyrobotics.frc2017.util.archive.DriveSignal;
 import com.palyrobotics.frc2017.util.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * Created by Nihar on 2/11/17.
@@ -81,8 +82,7 @@ public class SidePegAutoMode extends AutoModeBase {
 
 	@Override
 	public void prestart() {
-		System.out.println("Starting "+this.toString()+" Auto Mode");
-		Logger.getInstance().logRobotThread("Starting "+this.toString()+" Auto Mode");
+		Logger.getInstance().logRobotThread(Level.FINE, "Starting "+this.toString()+" Auto Mode");
 
 		ArrayList<Routine> sequence = new ArrayList<>();
 
@@ -146,7 +146,7 @@ public class SidePegAutoMode extends AutoModeBase {
 			driveForwardSetpoint = AutoDistances.kBlueBoilerForwardDistanceInches * Constants.kDriveTicksPerInch;
 			break;
 		default:
-			System.err.println("What in tarnation no side peg distance");
+			Logger.getInstance().logRobotThread(Level.WARNING, "What in tarnation no side peg distance");
 			driveForwardSetpoint = 0;
 			break;
 		}
@@ -155,7 +155,7 @@ public class SidePegAutoMode extends AutoModeBase {
 		driveForward.rightMotor.setMotionMagic(driveForwardSetpoint, mLongGains,
 				Gains.kSteikLongDriveMotionMagicCruiseVelocity, Gains.kSteikLongDriveMotionMagicMaxAcceleration);
 		
-		Logger.getInstance().logRobotThread("Drive forward", driveForward);
+		Logger.getInstance().logRobotThread(Level.FINE, "Drive forward", driveForward);
 		ArrayList<Routine> initialSlide = new ArrayList<>();
 		initialSlide.add(new CANTalonRoutine(driveForward, true));
 		initialSlide.add(new CustomPositioningSliderRoutine(sliderPositions[0]));
@@ -183,7 +183,7 @@ public class SidePegAutoMode extends AutoModeBase {
 			driveToAirshipSetpoint = AutoDistances.kBlueBoilerAirshipDistanceInches * Constants.kDriveTicksPerInch;
 			break;
 		default:
-			System.err.println("What in tarnation no side peg airship distance");
+			Logger.getInstance().logRobotThread(Level.WARNING, "What in tarnation no side peg distance");
 			driveToAirshipSetpoint = 0;
 			break;
 		}
@@ -193,7 +193,7 @@ public class SidePegAutoMode extends AutoModeBase {
 		driveToAirship.rightMotor.setMotionMagic(driveToAirshipSetpoint, mLongGains,
 				Gains.kSteikLongDriveMotionMagicCruiseVelocity, Gains.kSteikLongDriveMotionMagicMaxAcceleration);
 		
-		Logger.getInstance().logRobotThread("Drive to airship", driveToAirship);
+		Logger.getInstance().logRobotThread(Level.FINE, "Drive to airship", driveToAirship);
 		return new CANTalonRoutine(driveToAirship, true, 2);
 	}
 	/*

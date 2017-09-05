@@ -2,6 +2,7 @@ package com.palyrobotics.frc2017.subsystems;
 
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.logging.Level;
 
 import com.palyrobotics.frc2017.behavior.Routine;
 import com.palyrobotics.frc2017.config.Commands;
@@ -156,16 +157,16 @@ public class Slider extends Subsystem implements SubsystemLoop {
 				} else if (isPotentiometerFunctional) {
 					setSetpointsPotentiometer();
 				} else {
-					System.err.println("Attempting automatic positioning without sensors!");
+					Logger.getInstance().logSubsystemThread(Level.SEVERE, "Attempting automatic positioning without sensors!");
 				}
 				break;
 			case CUSTOM_POSITIONING:
 				if(!isEncoderFunctional) {
-					System.err.println("No custom positioning with potentiometer");
+					Logger.getInstance().logSubsystemThread(Level.SEVERE, "No custom positioning with potentiometer");
 					break;
 				}
 				if (!commands.robotSetpoints.sliderCustomSetpoint.isPresent()) {
-					System.err.println("No setpoint");
+					Logger.getInstance().logSubsystemThread(Level.SEVERE, "No setpoint");
 					break;
 				} else {
 					mTarget = SliderTarget.CUSTOM;
@@ -234,7 +235,7 @@ public class Slider extends Subsystem implements SubsystemLoop {
 			return;
 		}
 		else {
-			System.out.println("automatic setpoint"+mEncoderTargetPositions.get(mTarget));
+			Logger.getInstance().logSubsystemThread(Level.FINEST, "automatic setpoint"+mEncoderTargetPositions.get(mTarget));
 			mOutput.setPosition(mEncoderTargetPositions.get(mTarget), mEncoderGains);
 		}
 	}
