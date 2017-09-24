@@ -14,8 +14,7 @@ import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
 import com.palyrobotics.frc2017.robot.HardwareAdapter;
 import com.palyrobotics.frc2017.robot.team254.lib.util.CrashTracker;
 import com.palyrobotics.frc2017.util.CANTalonOutput;
-import com.palyrobotics.frc2017.util.Subsystem;
-import com.palyrobotics.frc2017.util.archive.SubsystemLoop;
+
 import com.palyrobotics.frc2017.util.logger.Logger;
 import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
 
@@ -24,7 +23,7 @@ import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
  * @author Prashanti
  * Controls the slider subsystem,
  */
-public class Slider extends Subsystem implements SubsystemLoop {
+public class Slider extends Subsystem {
 	private static Slider instance = new Slider();
 	public static Slider getInstance() {
 		return instance;

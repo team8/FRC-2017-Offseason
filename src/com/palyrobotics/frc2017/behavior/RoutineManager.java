@@ -5,11 +5,10 @@ import com.palyrobotics.frc2017.robot.team254.lib.util.StateHolder;
 import com.palyrobotics.frc2017.robot.team254.lib.util.Tappable;
 import com.palyrobotics.frc2017.subsystems.Climber;
 import com.palyrobotics.frc2017.subsystems.Drive;
-import com.palyrobotics.frc2017.subsystems.Flippers;
 import com.palyrobotics.frc2017.subsystems.Intake;
 import com.palyrobotics.frc2017.subsystems.Slider;
 import com.palyrobotics.frc2017.subsystems.Spatula;
-import com.palyrobotics.frc2017.util.Subsystem;
+import com.palyrobotics.frc2017.subsystems.Subsystem;
 import com.palyrobotics.frc2017.util.logger.Logger;
 
 import java.util.*;
@@ -178,7 +177,6 @@ public class RoutineManager implements Tappable {
 		HashMap<Subsystem, Integer> counter = new HashMap<Subsystem, Integer>();
 		counter.put(null, 0);	// for SampleRoutine
 		counter.put(Drive.getInstance(), 0);
-		counter.put(Flippers.getInstance(), 0);
 		counter.put(Slider.getInstance(), 0);
 		counter.put(Spatula.getInstance(), 0);
 		counter.put(Intake.getInstance(), 0);

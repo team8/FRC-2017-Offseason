@@ -1,11 +1,9 @@
 package com.palyrobotics.frc2017.robot;
 
-<<<<<<< HEAD
-=======
+
 import java.util.logging.Level;
 
 import com.ctre.CANTalon;
->>>>>>> e2a618b... Implemented logger levels
 import com.palyrobotics.frc2017.auto.AutoModeBase;
 import com.palyrobotics.frc2017.auto.AutoModeSelector;
 import com.palyrobotics.frc2017.behavior.RoutineManager;
