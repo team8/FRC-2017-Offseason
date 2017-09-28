@@ -49,15 +49,13 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
-		System.out.println("Start robotInit() for "+Constants.kRobotName.toString());
-		DashboardManager.getInstance().robotInit();
-		AndroidConnectionHelper.getInstance().start();
-		System.out.println("Finished starting");
 		mLogger.setFileName("8/20 testing");
 		mLogger.start();
 		DashboardManager.getInstance().robotInit();
 		AndroidConnectionHelper.getInstance().start();
-		mLogger.logRobotThread(Level.FINE, "Finished starting");
+		DashboardManager.getInstance().robotInit();
+		AndroidConnectionHelper.getInstance().start();
+		mLogger.logRobotThread(Level.FINE, "Startup sucessful");
 		mLogger.logRobotThread(Level.INFO, "Start robotInit() for "+Constants.kRobotName.toString());
 		mLogger.logRobotThread(Level.INFO, "Robot name: "+Constants.kRobotName);
 		mLogger.logRobotThread(Level.INFO, "Alliance: " + DriverStation.getInstance().getAlliance());
@@ -88,7 +86,7 @@ public class Robot extends IterativeRobot {
 		}
 
 		mHardwareUpdater.initHardware();
-		System.out.println("Auto: "+AutoModeSelector.getInstance().getAutoMode().toString());
+		mLogger.logRobotThread(Level.INFO, "Auto", AutoModeSelector.getInstance().getAutoMode().toString());
 //		AndroidConnectionHelper.getInstance().StartVisionApp();
 		mLogger.logRobotThread(Level.INFO, "End robotInit()");
 	}
@@ -102,7 +100,7 @@ public class Robot extends IterativeRobot {
 		mHardwareUpdater.configureTalons(false);
 		// Wait for talons to update
 		try {
-			System.out.println("Sleeping thread for 200 ms");
+			mLogger.logRobotThread(Level.FINEST, "Sleeping thread for 200 ms");
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
 
@@ -131,7 +129,7 @@ public class Robot extends IterativeRobot {
 //		System.out.println("Talon mode:"+HardwareAdapter.getInstance().getSlider().sliderTalon.getControlMode());
 		//		logPeriodic();
 //		System.out.println(robotState.sliderEncoder);
-		mLogger.logRobotThread(Level.FINER, "Nexus xdist: "+AndroidConnectionHelper.getInstance().getXDist());
+		mLogger.logRobotThread(Level.FINER, "Nexus xdist", AndroidConnectionHelper.getInstance().getXDist());
 		commands = mRoutineManager.update(commands);
 		mHardwareUpdater.updateSensors(robotState);
 		updateSubsystems();
@@ -140,7 +138,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		System.out.println("Start teleopInit()");
 		mLogger.start();
 		mLogger.logRobotThread(Level.INFO, "Start teleopInit()");
 		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
@@ -152,16 +149,15 @@ public class Robot extends IterativeRobot {
 		commands.wantedDriveState = Drive.DriveState.CHEZY;	//switch to chezy after auto ends
 		commands = operatorInterface.updateCommands(commands);
 		startSubsystems();
-		mLogger.logRobotThread("End teleopInit()");
-		System.out.println("End teleopInit()");
-	}
+		mLogger.logRobotThread(Level.INFO, "End teleopInit()");
+		}
 
 	@Override
 	public void teleopPeriodic() {
 		// Update RobotState
 		// Gets joystick commands
 		// Updates commands based on routines
-		mLogger.logRobotThread("Teleop Commands: ", commands);
+		mLogger.logRobotThread(Level.FINER, "Teleop Commands", commands);
 		logPeriodic();
 
 		commands = mRoutineManager.update(operatorInterface.updateCommands(commands));
@@ -176,7 +172,7 @@ public class Robot extends IterativeRobot {
 	
 	public void disabledInit() {
 		mLogger.logRobotThread(Level.INFO, "Start disabledInit()");
-		System.out.println("Current Auto Mode: " + AutoModeSelector.getInstance().getAutoMode().toString());
+		mLogger.logRobotThread(Level.FINE, "Current Auto Mode", AutoModeSelector.getInstance().getAutoMode().toString());
 		robotState.gamePeriod = RobotState.GamePeriod.DISABLED;
 		// Stops updating routines
 		mRoutineManager.reset(commands);
@@ -190,12 +186,13 @@ public class Robot extends IterativeRobot {
 		mHardwareUpdater.configureDriveTalons();
 		mHardwareUpdater.disableTalons();
 		DashboardManager.getInstance().toggleCANTable(false);
+
+		mLogger.logRobotThread(Level.INFO, "Gyro", robotState.drivePose.heading);
 		mLogger.logRobotThread(Level.INFO, "End disabledInit()");
 		mLogger.cleanup();
 		System.out.println("Log file: "+mLogger.getLogPath());
 		// Manually run garbage collector
 		System.gc();
-		System.out.println("Gyro: "+robotState.drivePose.heading);
 		System.out.println("End disabledInit()");
 	}
 
