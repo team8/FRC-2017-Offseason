@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
-		mLogger.setFileName("8/20 testing");
+		mLogger.setFileName("LogTest");
 		mLogger.start();
 		DashboardManager.getInstance().robotInit();
 		AndroidConnectionHelper.getInstance().start();

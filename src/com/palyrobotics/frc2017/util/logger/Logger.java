@@ -79,8 +79,8 @@ public class Logger {
 //		if (fileName == null) {
 //			fileName = new SimpleDateFormat("MMMdd HH-mm").format(date);
 //		}
-		dirName = fileName + new SimpleDateFormat("MM/dd/yy").format(date);
-		fileName = fileName + new SimpleDateFormat("MM/dd/yy HH:mm").format(date);
+		dirName = fileName + new SimpleDateFormat("MM-dd-yy").format(date);
+		fileName = fileName + new SimpleDateFormat("MM-dd-yy HH:mm").format(date);
 		os = System.getProperty("os.name");
 		String filePath;
 		if (os.startsWith("Mac")) {
@@ -280,7 +280,7 @@ public class Logger {
 				if(Constants.writeLevel.intValue() <= c.getLevel().intValue()) {
 					if(Constants.displayLevel.intValue() <= c.getLevel().intValue()){
 						System.out.println(c.toString());
-					}`
+					}
 					try {
 						Files.append(c.getLeveledString(), mainLog, Charsets.UTF_8);
 					} catch (IOException e) {
