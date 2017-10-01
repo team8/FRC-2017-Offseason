@@ -1,29 +1,24 @@
 package com.palyrobotics.frc2017.subsystems;
 
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.logging.Level;
-
-import com.palyrobotics.frc2017.behavior.Routine;
 import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.config.Constants;
 import com.palyrobotics.frc2017.config.Gains;
 import com.palyrobotics.frc2017.config.RobotState;
 import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
-import com.palyrobotics.frc2017.robot.HardwareAdapter;
-import com.palyrobotics.frc2017.robot.team254.lib.util.CrashTracker;
 import com.palyrobotics.frc2017.util.CANTalonOutput;
-
 import com.palyrobotics.frc2017.util.logger.Logger;
-import com.palyrobotics.frc2017.vision.AndroidConnectionHelper;
+
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.logging.Level;
 
 /**
  * Created by Nihar on 1/28/17.
  * @author Prashanti
  * Controls the slider subsystem,
  */
-public class Slider extends Subsystem {
+public class Slider extends Subsystem{
 	private static Slider instance = new Slider();
 	public static Slider getInstance() {
 		return instance;
@@ -120,23 +115,10 @@ public class Slider extends Subsystem {
 		sliderDist.updateValue(robotState.sliderPosition);
 		DashboardManager.getInstance().publishKVPair(sliderPotentiometer);
 		DashboardManager.getInstance().publishKVPair(sliderDist);
-	}
-	
-	/**
-	 * Takes in new set of commands, must be called by a routine!
-	 * @param commands the commands
-	 * @param master the object calling the method
-	 * @throws IllegalAccessException if master not a routine
-	 */
-	public void run(Commands commands,  Object master) throws IllegalAccessException {
-		//Throws an exception if called by an object that isn't a routine
-		if(!(master instanceof Routine)) {
-			throw new IllegalAccessException();
-		}
 		
 		mState = commands.wantedSliderState;
-		
 		switch(mState) {
+
 			case IDLE:
 				mTarget = SliderTarget.NONE;
 				mOutput.setPercentVBus(0);
@@ -161,11 +143,11 @@ public class Slider extends Subsystem {
 				break;
 			case CUSTOM_POSITIONING:
 				if(!isEncoderFunctional) {
-					Logger.getInstance().logSubsystemThread(Level.SEVERE, "No custom positioning with potentiometer");
+					Logger.getInstance().logSubsystemThread(Level.WARNING, "No custom positioning with potentiometer");
 					break;
 				}
 				if (!commands.robotSetpoints.sliderCustomSetpoint.isPresent()) {
-					Logger.getInstance().logSubsystemThread(Level.SEVERE, "No setpoint");
+					Logger.getInstance().logSubsystemThread(Level.WARNING, "No setpoint");
 					break;
 				} else {
 					mTarget = SliderTarget.CUSTOM;
@@ -176,6 +158,7 @@ public class Slider extends Subsystem {
 				break;
 		}		
 	}
+	
 	
 	/**
 	 * Encapsulate to use in both run and update methods
@@ -234,7 +217,7 @@ public class Slider extends Subsystem {
 			return;
 		}
 		else {
-			Logger.getInstance().logSubsystemThread(Level.FINEST, "automatic setpoint"+mEncoderTargetPositions.get(mTarget));
+			Logger.getInstance().logSubsystemThread(Level.FINE, "Automatic setpoint", mEncoderTargetPositions.get(mTarget));
 			mOutput.setPosition(mEncoderTargetPositions.get(mTarget), mEncoderGains);
 		}
 	}
@@ -298,3 +281,4 @@ public class Slider extends Subsystem {
 				+ "\nPotentiometer value is " + mRobotState.sliderPotentiometer + "\n";
 	}
 }
+
