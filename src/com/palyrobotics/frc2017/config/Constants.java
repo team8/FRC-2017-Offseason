@@ -23,7 +23,7 @@ public class Constants extends ConstantsBase {
 	 * FINEST: Most detailed tracing information, highest volume (300)
 	 */
 	public static Level displayLevel = Level.INFO;
-	public static Level writeLevel = Level.FINEST;
+	public static Level writeLevel = Level.FINE;
 	
 	// Android app information
 	public static String kPackageName = "com.frc8.team8vision";

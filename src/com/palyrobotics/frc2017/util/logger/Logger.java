@@ -32,6 +32,7 @@ public class Logger {
 	}
 
 	private String fileName = null;
+	private String dirName = null;
 
 	private boolean isEnabled = false;
 	
@@ -78,30 +79,31 @@ public class Logger {
 //		if (fileName == null) {
 //			fileName = new SimpleDateFormat("MMMdd HH-mm").format(date);
 //		}
-		fileName = fileName + new SimpleDateFormat("MMMdd HH-mm").format(date);
+		dirName = fileName + new SimpleDateFormat("MM/dd/yy").format(date);
+		fileName = fileName + new SimpleDateFormat("MM/dd/yy HH:mm").format(date);
 		os = System.getProperty("os.name");
 		String filePath;
 		if (os.startsWith("Mac")) {
-			filePath = "logs" + File.separatorChar + fileName;
+			filePath = "logs" + File.separatorChar + dirName;
 		}
 		else if (os.startsWith("Windows")) {
-			filePath = "C:" + File.separatorChar + "logs" + File.separatorChar + fileName;
+			filePath = "C:" + File.separatorChar + "logs" + File.separatorChar + dirName;
 		} 
 		else if (os.startsWith("Unix")){
 			// Pray that this is a roborio
 			// TODO: Maybe find the exact OS name
-			filePath = "/home/lvuser/logs/" + fileName;
+			filePath = "/home/lvuser/logs/" + dirName;
 //			// TODO:
 //			rioLog = new File("/var/local/natinst/log/FRC_UserProgram.log");
 		}
 		else {
-			filePath = "/home/lvuser/logs/" + fileName;
+			filePath = "/home/lvuser/logs/" + dirName;
 			System.err.println("Unrecognized OS; defaulting to Unix system");
 		}
-		mainLog = new File(filePath+File.separatorChar+"log.log");
+		mainLog = new File(filePath+File.separatorChar+fileName+".log");
 		while (mainLog.exists()) {
 			duplicatePrevent++;
-			mainLog = new File(filePath+File.separatorChar+"log"+duplicatePrevent+".log");
+			mainLog = new File(filePath+File.separatorChar+fileName+duplicatePrevent+".log");
 		}
 		try {
 			// File header
@@ -278,7 +280,7 @@ public class Logger {
 				if(Constants.writeLevel.intValue() <= c.getLevel().intValue()) {
 					if(Constants.displayLevel.intValue() <= c.getLevel().intValue()){
 						System.out.println(c.toString());
-					}
+					}`
 					try {
 						Files.append(c.getLeveledString(), mainLog, Charsets.UTF_8);
 					} catch (IOException e) {
