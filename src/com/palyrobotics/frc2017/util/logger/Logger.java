@@ -79,41 +79,25 @@ public class Logger {
 //		if (fileName == null) {
 //			fileName = new SimpleDateFormat("MMMdd HH-mm").format(date);
 //		}
-<<<<<<< HEAD
-		fileName = fileName + new SimpleDateFormat("MMMdd HH-mm").format(date);
-=======
 		dirName = fileName + new SimpleDateFormat("MM-dd-yy").format(date);
 		fileName = fileName + new SimpleDateFormat("MM-dd-yy HH:mm").format(date);
->>>>>>> logger-cleanup
 		os = System.getProperty("os.name");
 		String filePath;
 		if (os.startsWith("Mac")) {
 			filePath = "logs" + File.separatorChar + dirName;
 		}
 		else if (os.startsWith("Windows")) {
-<<<<<<< HEAD
-			filePath = "C:" + File.separatorChar + "logs" + File.separatorChar + fileName;
-=======
 			filePath = "C:" + File.separatorChar + "logs" + File.separatorChar + dirName;
->>>>>>> logger-cleanup
 		} 
 		else if (os.startsWith("Unix")){
 			// Pray that this is a roborio
 			// TODO: Maybe find the exact OS name
-<<<<<<< HEAD
-			filePath = "/home/lvuser/logs/" + fileName;
-=======
 			filePath = "/home/lvuser/logs/" + dirName;
->>>>>>> logger-cleanup
 //			// TODO:
 //			rioLog = new File("/var/local/natinst/log/FRC_UserProgram.log");
 		}
 		else {
-<<<<<<< HEAD
-			filePath = "/home/lvuser/logs/" + fileName;
-=======
 			filePath = "/home/lvuser/logs/" + dirName;
->>>>>>> logger-cleanup
 			System.err.println("Unrecognized OS; defaulting to Unix system");
 		}
 		mainLog = new File(filePath+File.separatorChar+fileName+".log");
