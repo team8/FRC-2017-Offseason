@@ -4,13 +4,12 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.palyrobotics.frc2017.config.Constants;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 
@@ -33,6 +32,7 @@ public class Logger {
 	}
 
 	private String fileName = null;
+	private String dirName = null;
 
 	private boolean isEnabled = false;
 	
@@ -79,30 +79,47 @@ public class Logger {
 //		if (fileName == null) {
 //			fileName = new SimpleDateFormat("MMMdd HH-mm").format(date);
 //		}
+<<<<<<< HEAD
 		fileName = fileName + new SimpleDateFormat("MMMdd HH-mm").format(date);
+=======
+		dirName = fileName + new SimpleDateFormat("MM-dd-yy").format(date);
+		fileName = fileName + new SimpleDateFormat("MM-dd-yy HH:mm").format(date);
+>>>>>>> logger-cleanup
 		os = System.getProperty("os.name");
 		String filePath;
 		if (os.startsWith("Mac")) {
-			filePath = "logs" + File.separatorChar + fileName;
+			filePath = "logs" + File.separatorChar + dirName;
 		}
 		else if (os.startsWith("Windows")) {
+<<<<<<< HEAD
 			filePath = "C:" + File.separatorChar + "logs" + File.separatorChar + fileName;
+=======
+			filePath = "C:" + File.separatorChar + "logs" + File.separatorChar + dirName;
+>>>>>>> logger-cleanup
 		} 
 		else if (os.startsWith("Unix")){
 			// Pray that this is a roborio
 			// TODO: Maybe find the exact OS name
+<<<<<<< HEAD
 			filePath = "/home/lvuser/logs/" + fileName;
+=======
+			filePath = "/home/lvuser/logs/" + dirName;
+>>>>>>> logger-cleanup
 //			// TODO:
 //			rioLog = new File("/var/local/natinst/log/FRC_UserProgram.log");
 		}
 		else {
+<<<<<<< HEAD
 			filePath = "/home/lvuser/logs/" + fileName;
+=======
+			filePath = "/home/lvuser/logs/" + dirName;
+>>>>>>> logger-cleanup
 			System.err.println("Unrecognized OS; defaulting to Unix system");
 		}
-		mainLog = new File(filePath+File.separatorChar+"log.log");
+		mainLog = new File(filePath+File.separatorChar+fileName+".log");
 		while (mainLog.exists()) {
 			duplicatePrevent++;
-			mainLog = new File(filePath+File.separatorChar+"log"+duplicatePrevent+".log");
+			mainLog = new File(filePath+File.separatorChar+fileName+duplicatePrevent+".log");
 		}
 		try {
 			// File header

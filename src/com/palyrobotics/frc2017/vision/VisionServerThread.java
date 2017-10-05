@@ -2,12 +2,7 @@ package com.palyrobotics.frc2017.vision;
 
 import com.palyrobotics.frc2017.config.Constants;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
+import java.io.IOException;
 
 /**
  * Supplies wrapper methods for using adb to control the Android
@@ -154,6 +149,10 @@ public class VisionServerThread implements Runnable{
 	private VisionServerState WriteJPEG(){
 		// Initialize data
 		byte[] data = m_androidServer.getData();
+
+//		if(data == null || data.length == 0){
+//			System.out.println("Vision Video Data is Null");
+//		}
 
 		// Write Image to JPEG stream
 		try {

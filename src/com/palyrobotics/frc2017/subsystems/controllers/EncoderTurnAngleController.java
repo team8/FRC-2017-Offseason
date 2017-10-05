@@ -74,7 +74,6 @@ public class EncoderTurnAngleController implements DriveController {
 	public DriveSignal update(RobotState state) {
 		cachedPose = state.drivePose;
 		return new DriveSignal(leftOutput, rightOutput);
-		
 	}
 
 	@Override

@@ -1,12 +1,12 @@
 package com.palyrobotics.frc2017.vision;
 
+import com.palyrobotics.frc2017.config.Constants;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import com.palyrobotics.frc2017.config.Constants;
 
 /**
  * Supplies wrapper methods for using adb to control the Android

@@ -17,7 +17,6 @@ import com.palyrobotics.frc2017.config.Constants;
 import com.palyrobotics.frc2017.config.Gains;
 import com.palyrobotics.frc2017.util.archive.CheesyDriveHelper;
 import com.palyrobotics.frc2017.util.archive.DriveSignal;
-import com.palyrobotics.frc2017.util.archive.SubsystemLoop;
 import com.palyrobotics.frc2017.util.logger.Logger;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
@@ -27,7 +26,7 @@ import com.team254.lib.trajectory.Trajectory;
  * Uses controllers or cheesydrivehelper/proportionaldrivehelper to calculate DriveSignal
  * @author Nihar
  */
-public class Drive extends Subsystem implements SubsystemLoop {
+public class Drive extends Subsystem {
 	private static Drive instance = new Drive();
 	public static Drive getInstance() {
 		return instance;
