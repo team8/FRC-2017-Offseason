@@ -3,6 +3,7 @@ package com.palyrobotics.frc2017.behavior.routines.scoring;
 import com.palyrobotics.frc2017.behavior.Routine;
 import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.config.Constants;
+import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.robot.HardwareAdapter;
 import com.palyrobotics.frc2017.robot.Robot;
 import com.palyrobotics.frc2017.subsystems.Slider;
@@ -50,6 +51,9 @@ public class CustomPositioningSliderRoutine extends Routine {
 
 	@Override
 	public Commands update(Commands commands) {
+		DashboardManager.getInstance().updateCANTable(Robot.getRobotState().sliderVelocity + "," +
+													  Robot.getRobotState().sliderPosition + "," +
+													  (target * Constants.kSliderRevolutionsPerInch - Robot.getRobotState().sliderPosition ));
 		commands.robotSetpoints.sliderSetpoint = Slider.SliderTarget.CUSTOM;
 		commands.robotSetpoints.sliderCustomSetpoint = Optional.of(target * Constants.kSliderRevolutionsPerInch);
 		updated = true;

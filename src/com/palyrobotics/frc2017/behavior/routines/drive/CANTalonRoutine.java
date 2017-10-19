@@ -84,7 +84,7 @@ public class CANTalonRoutine extends Routine {
 	public Commands update(Commands commands) {
 		Commands output = commands.copy();
 		output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-		DashboardManager.getInstance().updateCANTable(((CANTalonDriveController)drive.getController()).getCanTableString());
+//		DashboardManager.getInstance().updateCANTable(((CANTalonDriveController)drive.getController()).getCanTableString());
 		return output;
 	}
 
