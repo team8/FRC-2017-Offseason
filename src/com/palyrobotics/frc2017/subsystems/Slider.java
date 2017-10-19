@@ -6,6 +6,7 @@ import com.palyrobotics.frc2017.config.Gains;
 import com.palyrobotics.frc2017.config.RobotState;
 import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
+import com.palyrobotics.frc2017.robot.Robot;
 import com.palyrobotics.frc2017.util.CANTalonOutput;
 
 import java.util.HashMap;
@@ -244,6 +245,13 @@ public class Slider extends Subsystem{
 					mPotentiometerGains.D * (previousPotentiometer.get() - potentiometerValue))));
 			integralPotentiometer = Optional.of((integralPotentiometer.get() + mPotentiometerTargetPositions.get(mTarget) - potentiometerValue));
 			previousPotentiometer = Optional.of(potentiometerValue);
+			
+			DashboardManager.getInstance().updateCANTable((mPotentiometerTargetPositions.get(mTarget) - potentiometerValue) + "," +
+															Robot.getRobotState().sliderVelocity + ","
+															+ mPotentiometerGains.P * (mPotentiometerTargetPositions.get(mTarget) - potentiometerValue) + ","
+															+ mPotentiometerGains.I * integralPotentiometer.get()+ ","
+															+ mPotentiometerGains.D * (previousPotentiometer.get() - potentiometerValue));
+
 		}
 		else {
 			mOutput.setPercentVBus(Math.max(-1, Math.min(1, 
