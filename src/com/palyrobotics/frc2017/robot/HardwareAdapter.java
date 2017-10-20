@@ -106,14 +106,8 @@ public class HardwareAdapter {
 		}
 
 		private SliderHardware() {
-			if (Constants.kRobotName == Constants.RobotName.STEIK){
-				sliderTalon = new CANTalon(Constants.kSteikSliderMotorDeviceID);
-				sliderPotentiometer = new AnalogInput(Constants.kSteikSliderPotentiometerPort);
-			}
-			else {
-				sliderTalon = null;
-				sliderPotentiometer = null;
-			}
+			sliderTalon = new CANTalon(Constants.kSteikSliderMotorDeviceID);
+			sliderPotentiometer = new AnalogInput(Constants.kSteikSliderPotentiometerPort);
 		}
 	}
 

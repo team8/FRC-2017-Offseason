@@ -322,12 +322,13 @@ class HardwareUpdater {
 		} else {
 			robotState.drivePose.rightError = Optional.empty();
 		}
-		if (Constants.kRobotName == Constants.RobotName.STEIK) {
+		// if (Constants.kRobotName == Constants.RobotName.STEIK) {
 			CANTalon sliderTalon = HardwareAdapter.SliderHardware.getInstance().sliderTalon;
 			robotState.sliderEncoder = sliderTalon.getEncPosition();
 			// update the cantables with talon info
 //			DashboardManager.getInstance().updateCANTable(HardwareAdapter.DrivetrainHardware.getInstance().leftMasterTalon.getOutputVoltage() + "," + HardwareAdapter.DrivetrainHardware.getInstance().rightMasterTalon.getOutputVoltage() + "," + HardwareAdapter.DrivetrainHardware.getInstance().leftMasterTalon.getPosition() + "," + HardwareAdapter.DrivetrainHardware.getInstance().rightMasterTalon.getPosition() + "," +  HardwareAdapter.DrivetrainHardware.getInstance().leftMasterTalon.getClosedLoopError() + "," + HardwareAdapter.DrivetrainHardware.getInstance().rightMasterTalon.getClosedLoopError());
 			robotState.sliderPotentiometer = HardwareAdapter.SliderHardware.getInstance().sliderPotentiometer.getValue();
+			System.out.println("Current Pot Value: " + robotState.sliderPotentiometer);
 			robotState.sliderVelocity = sliderTalon.getSpeed();
 			if (sliderTalon.getControlMode().isPID()) {
 				if (sliderTalon.getSetpoint() == mSlider.getOutput().getSetpoint()) {
@@ -339,7 +340,7 @@ class HardwareUpdater {
 			} else {
 				robotState.sliderClosedLoopError = Optional.empty();
 			}
-		}
+		// }
 		if (HardwareAdapter.getInstance().getClimber().climberTalon != null) {
 			robotState.climberEncoder = HardwareAdapter.ClimberHardware.getInstance().climberTalon.getPosition();
 		}

@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by Nihar on 1/28/17.
  * @author Prashanti
- * Controls the slider subsystem,
+ * Controls the slider subsystem
  */
 public class Slider extends Subsystem{
 	private static Slider instance = new Slider();
@@ -78,9 +78,9 @@ public class Slider extends Subsystem{
 		mEncoderTargetPositions.put(SliderTarget.LEFT, -1.0);
 		mEncoderTargetPositions.put(SliderTarget.CENTER, 0.0);
 		mEncoderTargetPositions.put(SliderTarget.RIGHT, 1.0);
-		mPotentiometerTargetPositions.put(SliderTarget.LEFT, 0.0);
+		mPotentiometerTargetPositions.put(SliderTarget.LEFT, -1.0);
 		mPotentiometerTargetPositions.put(SliderTarget.CENTER, 0.0);
-		mPotentiometerTargetPositions.put(SliderTarget.RIGHT, 0.0);
+		mPotentiometerTargetPositions.put(SliderTarget.RIGHT, 1.0);
 		
 		sliderPotentiometer = new DashboardValue("slider-pot");
 		sliderDist = new DashboardValue("sliderDistance");
@@ -228,16 +228,17 @@ public class Slider extends Subsystem{
 			previousPotentiometer = Optional.empty();
 			integralPotentiometer = Optional.empty();
 		} else {
+			System.out.println("auto potentiometer setpoint"+mEncoderTargetPositions.get(mTarget));
 			updatePotentiometerAutomaticPositioning();
 		}
 	}
 	
 	/**
 	 * Updates the control loop for positioning using the potentiometer
-	 * @return whether the control loop is on target
 	 */
 	private void updatePotentiometerAutomaticPositioning() {
 		double potentiometerValue = mRobotState.sliderPotentiometer;
+		System.out.println("Current pot value: " + potentiometerValue);
 		if(previousPotentiometer.isPresent() && integralPotentiometer.isPresent()) {
 			mOutput.setPercentVBus(Math.max(-1, Math.min(1, 
 					mPotentiometerGains.P * (mPotentiometerTargetPositions.get(mTarget) - potentiometerValue) +
@@ -249,7 +250,7 @@ public class Slider extends Subsystem{
 			DashboardManager.getInstance().updateCANTable((mPotentiometerTargetPositions.get(mTarget) - potentiometerValue) + "," +
 															Robot.getRobotState().sliderVelocity + ","
 															+ mPotentiometerGains.P * (mPotentiometerTargetPositions.get(mTarget) - potentiometerValue) + ","
-															+ mPotentiometerGains.I * integralPotentiometer.get()+ ","
+															+ mPotentiometerGains.I * integralPotentiometer.get() + ","
 															+ mPotentiometerGains.D * (previousPotentiometer.get() - potentiometerValue));
 
 		}
