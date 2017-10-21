@@ -23,7 +23,7 @@ public class Slider extends Subsystem{
 		return instance;
 	}
 	//Miscellaneous constants
-	private static final int kPotentiometerTolerance = 0;
+	private static final int kPotentiometerTolerance = 40;
 	private static final int kEncoderTolerance = 40;
 	
 	//all code assumes that right is 0 and left and center are both positive on both pot and encoder
@@ -55,8 +55,8 @@ public class Slider extends Subsystem{
 	private Optional<Double> integralPotentiometer = Optional.empty();
 	
 	//Sensor functionality fields
-	private boolean isEncoderFunctional = true;
-	private boolean isPotentiometerFunctional = false;
+	private boolean isEncoderFunctional = false;
+	private boolean isPotentiometerFunctional = true;
 	
 	//Positioning constants
 	private final HashMap<SliderTarget,Double> mEncoderTargetPositions = new HashMap<SliderTarget,Double>();
@@ -171,8 +171,8 @@ public class Slider extends Subsystem{
 	 * @return if the control loop is on target
 	 */
 	private boolean onTargetPotentiometerPositioning() {
-		if(mTarget == SliderTarget.NONE) {
-			return false;
+		if(mTarget == SliderTarget.DONE) {
+			return true;
 		}
 		boolean output = true;
 		try {
@@ -224,7 +224,7 @@ public class Slider extends Subsystem{
 	private void setSetpointsPotentiometer() {
 		if (onTargetPotentiometerPositioning()) {
 			mState = SliderState.IDLE;
-			mTarget = SliderTarget.NONE;
+			mTarget = SliderTarget.DONE;
 			previousPotentiometer = Optional.empty();
 			integralPotentiometer = Optional.empty();
 		} else {
