@@ -96,6 +96,7 @@ public class CANTalonOutput {
 	 * @param power
 	 */
 	public void setPercentVBus(double power) {
+		System.out.println("POWER: " + power);
 		controlMode = CANTalon.TalonControlMode.PercentVbus;
 		setpoint = power;
 	}
@@ -128,7 +129,7 @@ public class CANTalonOutput {
 	public void setMotionMagic(double setpoint, Gains gains, double cruiseVelocity, double accel) {
 		controlMode = CANTalon.TalonControlMode.MotionMagic;
 		this.setpoint = setpoint;
-		this.gains = gains;
+		this.gains = gains; 
 		this.accel = accel;
 		this.cruiseVel = cruiseVelocity;
 		this.gains = gains;

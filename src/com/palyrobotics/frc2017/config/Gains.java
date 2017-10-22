@@ -124,9 +124,9 @@ public class Gains {
 			kSteikSliderEncoderkF, kSteikSliderEncoderkIzone, kSteikSliderEncoderkRampRate);
 
 	// Slider potentiometer position onboard control loop
-	public static final double kSteikSliderPotentiometerkP = 0.1;
-	public static final double kSteikSliderPotentiometerkI = 0;
-	public static final double kSteikSliderPotentiometerkD = 0;
+	public static final double kSteikSliderPotentiometerkP = 0.8/625;
+	public static final double kSteikSliderPotentiometerkI = 0.0066/625;
+	public static final double kSteikSliderPotentiometerkD = 8/625;
 	public static final double kSteikSliderPotentiometerkF = 0;
 	public static final int kSteikSliderPotentiometerkIzone = 0;
 	public static final double kSteikSliderPotentiometerkRampRate = 0;

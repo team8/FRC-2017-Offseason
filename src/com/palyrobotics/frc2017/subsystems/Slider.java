@@ -78,9 +78,9 @@ public class Slider extends Subsystem{
 		mEncoderTargetPositions.put(SliderTarget.LEFT, -1.0);
 		mEncoderTargetPositions.put(SliderTarget.CENTER, 0.0);
 		mEncoderTargetPositions.put(SliderTarget.RIGHT, 1.0);
-		mPotentiometerTargetPositions.put(SliderTarget.LEFT, -1.0);
-		mPotentiometerTargetPositions.put(SliderTarget.CENTER, 0.0);
-		mPotentiometerTargetPositions.put(SliderTarget.RIGHT, 1.0);
+		mPotentiometerTargetPositions.put(SliderTarget.LEFT, 3306.0);
+		mPotentiometerTargetPositions.put(SliderTarget.CENTER, 2674.0);
+		mPotentiometerTargetPositions.put(SliderTarget.RIGHT, 2042.0);
 		
 		sliderPotentiometer = new DashboardValue("slider-pot");
 		sliderDist = new DashboardValue("sliderDistance");
@@ -228,7 +228,7 @@ public class Slider extends Subsystem{
 			previousPotentiometer = Optional.empty();
 			integralPotentiometer = Optional.empty();
 		} else {
-			System.out.println("auto potentiometer setpoint"+mEncoderTargetPositions.get(mTarget));
+			System.out.println("auto potentiometer setpoint"+mPotentiometerTargetPositions.get(mTarget));
 			updatePotentiometerAutomaticPositioning();
 		}
 	}
@@ -240,23 +240,24 @@ public class Slider extends Subsystem{
 		double potentiometerValue = mRobotState.sliderPotentiometer;
 		System.out.println("Current pot value: " + potentiometerValue);
 		if(previousPotentiometer.isPresent() && integralPotentiometer.isPresent()) {
-			mOutput.setPercentVBus(Math.max(-1, Math.min(1, 
+			mOutput.setPercentVBus(-1 * Math.max(-1, Math.min(1, 
 					mPotentiometerGains.P * (mPotentiometerTargetPositions.get(mTarget) - potentiometerValue) +
 					mPotentiometerGains.I * integralPotentiometer.get() +
 					mPotentiometerGains.D * (previousPotentiometer.get() - potentiometerValue))));
 			integralPotentiometer = Optional.of((integralPotentiometer.get() + mPotentiometerTargetPositions.get(mTarget) - potentiometerValue));
-			previousPotentiometer = Optional.of(potentiometerValue);
 			
 			DashboardManager.getInstance().updateCANTable((mPotentiometerTargetPositions.get(mTarget) - potentiometerValue) + "," +
 															Robot.getRobotState().sliderVelocity + ","
 															+ mPotentiometerGains.P * (mPotentiometerTargetPositions.get(mTarget) - potentiometerValue) + ","
 															+ mPotentiometerGains.I * integralPotentiometer.get() + ","
 															+ mPotentiometerGains.D * (previousPotentiometer.get() - potentiometerValue));
+			
+			previousPotentiometer = Optional.of(potentiometerValue);
 
 		}
 		else {
 			mOutput.setPercentVBus(Math.max(-1, Math.min(1, 
-					mPotentiometerGains.P * (mPotentiometerTargetPositions.get(mTarget) - potentiometerValue))));
+					-1 * mPotentiometerGains.P * (mPotentiometerTargetPositions.get(mTarget) - potentiometerValue))));
 			integralPotentiometer = Optional.of(mPotentiometerTargetPositions.get(mTarget) - potentiometerValue);
 			previousPotentiometer = Optional.of(potentiometerValue);
 		}

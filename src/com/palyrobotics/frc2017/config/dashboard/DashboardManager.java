@@ -31,7 +31,7 @@ public class DashboardManager {
 			Gains.initNetworkTableGains();
 			if (enableCANTable) {
 				this.canTable = NetworkTable.getTable(CAN_TABLE_NAME);
-				NetworkTable.setUpdateRate(.015);
+				NetworkTable.setUpdateRate(.005);
 			}
 		}
 		catch (UnsatisfiedLinkError e) {
