@@ -19,7 +19,7 @@ public class TestTrajectoryAutoMode extends AutoModeBase {
 	private String mDesired;
 
 	public TestTrajectoryAutoMode() {
-		mDesired = "RedCenter";
+		mDesired = "RedBoiler";
 		AutoPathLoader.loadPaths();
 		mPath = AutoPathLoader.get(mDesired);
 	}

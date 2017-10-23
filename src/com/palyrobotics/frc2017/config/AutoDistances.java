@@ -52,8 +52,8 @@ public class AutoDistances {
 	public static double kBlueLoadingPegX = 130.0;
 	public static double kBlueLoadingPegY = 90.5;
 	//Positive increases the magnitude of each dimension
-	public static double kBlueLoadingPegOffsetX = (-2.0-0.75);
-	public static double kBlueLoadingPegOffsetY = (11.0+0.75);
+	public static double kBlueLoadingPegOffsetX = 0;//(-2.0-0.75);
+	public static double kBlueLoadingPegOffsetY = 0;//(11.0+0.75);
 
 	// Red left loading station
 	public static double kRedLoadingPegX = 132.0;
@@ -74,6 +74,6 @@ public class AutoDistances {
 	public static double kRedBoilerPegX = 127.0;
 	public static double kRedBoilerPegY = 91.0;
 	//Positive increases the magnitude of each dimension
-	public static double kRedBoilerPegOffsetX = -2.0;
-	public static double kRedBoilerPegOffsetY = 11.0;
+	public static double kRedBoilerPegOffsetX = 0;//-2.0;
+	public static double kRedBoilerPegOffsetY = 0;//11.0;
 }

@@ -1,5 +1,7 @@
 package com.palyrobotics.frc2017.auto.modes;
 
+import java.util.ArrayList;
+
 import com.palyrobotics.frc2017.auto.AutoModeBase;
 import com.palyrobotics.frc2017.behavior.ParallelRoutine;
 import com.palyrobotics.frc2017.behavior.Routine;
@@ -7,11 +9,10 @@ import com.palyrobotics.frc2017.behavior.SequentialRoutine;
 import com.palyrobotics.frc2017.behavior.routines.SpatulaDownAutocorrectRoutine;
 import com.palyrobotics.frc2017.behavior.routines.drive.CANTalonRoutine;
 import com.palyrobotics.frc2017.behavior.routines.drive.EncoderTurnAngleRoutine;
+import com.palyrobotics.frc2017.behavior.routines.drive.TimedDriveRoutine;
 import com.palyrobotics.frc2017.config.Constants;
 import com.palyrobotics.frc2017.config.Gains;
 import com.palyrobotics.frc2017.util.archive.DriveSignal;
-
-import java.util.ArrayList;
 
 /**
  * Created by Nihar on 1/11/17.
@@ -44,22 +45,24 @@ public class TestAutoMode extends AutoModeBase {
 //		}
 //		sequence.add(new CustomPositioningSliderRoutine(0));
 //		sequence.add(new CustomPositioningSliderRoutine(setpoint-1));
-
-		DriveSignal signal = DriveSignal.getNeutralSignal();
+//
+//		DriveSignal signal = DriveSignal.getNeutralSignal();
+//		
+//		double dist = 24;
+//		
+//		signal.leftMotor.setMotionMagic(dist*Constants.kDriveTicksPerInch, Gains.steikShortDriveMotionMagicGains,
+//				Gains.kSteikShortDriveMotionMagicCruiseVelocity, Gains.kSteikShortDriveMotionMagicMaxAcceleration);
+//		
+//		signal.rightMotor.setMotionMagic(dist*Constants.kDriveTicksPerInch, Gains.steikShortDriveMotionMagicGains,
+//				Gains.kSteikShortDriveMotionMagicCruiseVelocity, Gains.kSteikShortDriveMotionMagicMaxAcceleration);
+//		
+//		sequence.add(new CANTalonRoutine(signal, true, 100000));
 		
-		double dist = 24;
-		
-		signal.leftMotor.setMotionMagic(dist*Constants.kDriveTicksPerInch, Gains.steikShortDriveMotionMagicGains,
-				Gains.kSteikShortDriveMotionMagicCruiseVelocity, Gains.kSteikShortDriveMotionMagicMaxAcceleration);
-		
-		signal.rightMotor.setMotionMagic(dist*Constants.kDriveTicksPerInch, Gains.steikShortDriveMotionMagicGains,
-				Gains.kSteikShortDriveMotionMagicCruiseVelocity, Gains.kSteikShortDriveMotionMagicMaxAcceleration);
-		
-		sequence.add(new CANTalonRoutine(signal, true, 100000));
 		
 //		sequence.add(new TimedRoutine(1, new AutocorrectPositioningSliderRoutine(Slider.SliderTarget.CENTER)));
 //		sequence.add(new VisionSliderRoutine());
 		
+		sequence.add(new TimedDriveRoutine(6.0, 3.5));
 		return new SequentialRoutine(sequence);
 	}
 

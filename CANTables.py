@@ -10,7 +10,7 @@ import time
 # AUTHOR: Robbie Selwyn
 
 
-IP = "roborio-8-frc.local"
+IP = "roborio-9008-frc.local"
 
 NetworkTable.setIPAddress(IP)
 NetworkTable.setClientMode()
