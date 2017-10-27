@@ -41,12 +41,12 @@ public class AutoDistances {
 	// Calibration data
 	public static double kBackup = -0.8;
 	public static double kRedCenterPeg = 111.0;
-	public static double kRedCenterPegOffsetX = 3.5;
-	public static double kRedCenterPegOffsetY = 4.0;
+	public static double kRedCenterPegOffsetX = 0; //3.5;
+	public static double kRedCenterPegOffsetY = 0; //4.0;
 
 	public static double kBlueCenterPeg = 111.0;
-	public static double kBlueCenterPegOffsetX = 3.5;
-	public static double kBlueCenterPegOffsetY = 3.0;
+	public static double kBlueCenterPegOffsetX = 0; //3.5;
+	public static double kBlueCenterPegOffsetY = 0; //3.0;
 
 	// Blue right loading station
 	public static double kBlueLoadingPegX = 130.0;
@@ -59,15 +59,15 @@ public class AutoDistances {
 	public static double kRedLoadingPegX = 132.0;
 	public static double kRedLoadingPegY = 92.0;
 	//Positive increases the magnitude of each dimension
-	public static double kRedLoadingPegOffsetX = -1.0;
-	public static double kRedLoadingPegOffsetY = 6.5;
+	public static double kRedLoadingPegOffsetX = 0; //-1.0;
+	public static double kRedLoadingPegOffsetY = 0; //6.5;
 
 	// Blue left boiler
 	public static double kBlueBoilerPegX = (125.5);
 	public static double kBlueBoilerPegY = (94.0);
 	//Positive increases the magnitude of each dimension
-	public static double kBlueBoilerPegOffsetX = -1.67;
-	public static double kBlueBoilerPegOffsetY = 6.75;
+	public static double kBlueBoilerPegOffsetX = 0; //-1.67;
+	public static double kBlueBoilerPegOffsetY = 0; //6.75;
 
 	// Red right boiler
 	// should be positive

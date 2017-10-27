@@ -48,11 +48,11 @@ public class VisionSidePegAutoMode extends AutoModeBase {
 				break;
 			case RED_LOADING:
 				mPath = AutoPathLoader.get("RedLoadingVision");
-				mTrajectoryGains = Gains.kRightTurnTrajectoryGains;
+				mTrajectoryGains = Gains.kStraightTrajectoryGains;
 				break;
 			case RED_BOILER:
 				mPath = AutoPathLoader.get("RedBoilerVision");
-				mTrajectoryGains = Gains.kLeftTurnTrajectoryGains;
+				mTrajectoryGains = Gains.kStraightTrajectoryGains;
 				break;
 			default:
 				mPath = null;
