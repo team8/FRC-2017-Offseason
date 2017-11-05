@@ -6,9 +6,14 @@ public class Constants extends ConstantsBase {
 	public enum RobotName {
 		STEIK, DERICA
 	}
+	
+	public enum DriverName {
+		ERIC
+	}
 
 	// Initialization constants
 	public static final RobotName kRobotName = RobotName.STEIK;
+	public static final DriverName kDriverName = DriverName.ERIC;
 	public static final boolean kCalibrateSliderWithPotentiometer = true;
 	
 	// Android app information
@@ -24,38 +29,42 @@ public class Constants extends ConstantsBase {
 	public static int kVideoPort = 8009;
 	public static int kMJPEGServerSocketPort = 1180;
 
-	// Cheesy Drive
+
+	// START CHEESY DRIVE CONSTANTS
+	//set by DriverProfile
 
 	//Sensitivities for how fast non-quickturn turning is
-	public static double kLowGearDriveSensitivity = .70;
-	public static double kHighGearDriveSensitivity = 0.85;
+	public static double kLowGearDriveSensitivity = 0;
+	public static double kHighGearDriveSensitivity = 0;
 	
 	//Sensitivities for quickturn
-	public static double kLowGearQuickTurnSensitivity = 0.8;
-	public static double kLowGearPreciseQuickTurnSensitivity = 0.35;
-	public static double kHighGearQuickTurnSensitivity = 0.8;
-	public static double kHighGearPreciseQuickTurnSensitivity = 0.35;
+	public static double kLowGearQuickTurnSensitivity = 0;
+	public static double kLowGearPreciseQuickTurnSensitivity = 0;
+	public static double kHighGearQuickTurnSensitivity = 0;
+	public static double kHighGearPreciseQuickTurnSensitivity = 0;
 	
 	//Threshold for quickturn sensitivity change
-	public static double kQuickTurnSensitivityThreshold = 0.90;
+	public static double kQuickTurnSensitivityThreshold = 0;
 
 	//The rate at which the QuickStopAccumulator will decrease
-	public static double kQuickStopAccumulatorDecreaseRate = 0.8;
+	public static double kQuickStopAccumulatorDecreaseRate = 0;
 
 	//The value at which the QuickStopAccumulator will begin to decrease
-	public static double kQuickStopAccumulatorDecreaseThreshold = 1.2;
-	public static double kNegativeInertiaScalar = 5.0;
+	public static double kQuickStopAccumulatorDecreaseThreshold = 0;
+	public static double kNegativeInertiaScalar = 0;
 	
 	//How much the QuickStopAccumulator is affected by the wheel
 	//(1-alpha) is how much the QuickStopAccumulator is affected by the previous QuickStopAccumulator
 	//Range: (0, 1)
-	public static double kAlpha = 0.45;
+	public static double kAlpha = 0;
 
-	public static double kCyclesUntilStop = 50;
+	public static double kCyclesUntilStop = 0;
 
 	// Manual control speed tuning
-	public static double kManualIntakeSpeed = -1.0;
-	public static double kManualExhaustSpeed = 1.0;
+	public static double kManualIntakeSpeed = 0;
+	public static double kManualExhaustSpeed = 0;
+	//END CHEESY DRIVE CONSTANTS
+
 
 	/*
 	 * Control loop constants for both robots

@@ -6,6 +6,7 @@ import com.palyrobotics.frc2017.behavior.RoutineManager;
 import com.palyrobotics.frc2017.behavior.routines.AutomaticClimberRoutine;
 import com.palyrobotics.frc2017.config.Commands;
 import com.palyrobotics.frc2017.config.Constants;
+import com.palyrobotics.frc2017.config.DriverProfile;
 import com.palyrobotics.frc2017.config.RobotState;
 import com.palyrobotics.frc2017.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2017.config.dashboard.DashboardValue;
@@ -48,12 +49,13 @@ public class Robot extends IterativeRobot {
 	
 	private double mStartTime;
 	private boolean startedClimberRoutine = false;
-
+	
 	@Override
 	public void robotInit() {
 		System.out.println("Start robotInit() for "+Constants.kRobotName.toString());
 		DashboardManager.getInstance().robotInit();
 		VisionManager.getInstance().start(Constants.kAndroidConnectionUpdateRate, false);
+		DriverProfile.configConstants();
 		System.out.println("Finished starting");
 		mLogger.setFileName("8/20 testing");
 		mLogger.start();
