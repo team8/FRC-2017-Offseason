@@ -29,7 +29,7 @@ class HardwareUpdater {
 	public class HardwareSensorLoop implements Loop {
 		@Override
 		public void update() {
-			updateSensors(mRobot.getRobotState());
+			updateSensors(RobotEnclosingThread.getRobotState());
 		}
 
 		@Override
@@ -66,12 +66,12 @@ class HardwareUpdater {
 	private Spatula mSpatula;
 	private Intake mIntake;
 	private Climber mClimber;
-	private Robot mRobot;
+	private RobotEnclosingThread mRobot;
 
 	/**
 	 * Hardware Updater for Steik
 	 */
-	HardwareUpdater(Robot robot, Drive drive, Slider slider, Spatula spatula, Intake intake, Climber climber)
+	HardwareUpdater(RobotEnclosingThread robot, Drive drive, Slider slider, Spatula spatula, Intake intake, Climber climber)
 			throws Exception {
 		if (Constants.kRobotName != Constants.RobotName.STEIK) {
 			System.out.println("Incompatible robot name and hardware!");
