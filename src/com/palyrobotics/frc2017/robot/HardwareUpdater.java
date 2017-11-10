@@ -6,6 +6,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.palyrobotics.frc2017.config.Constants;
 import com.palyrobotics.frc2017.config.Constants.RobotName;
 import com.palyrobotics.frc2017.config.RobotState;
+import com.palyrobotics.frc2017.robot.team254.lib.util.Loop;
 import com.palyrobotics.frc2017.subsystems.*;
 import com.palyrobotics.frc2017.util.CANTalonOutput;
 import com.palyrobotics.frc2017.util.logger.Logger;
@@ -16,6 +17,30 @@ import java.util.Optional;
  * Should only be used in robot package.
  */
 class HardwareUpdater {
+	public HardwareSensorLoop getHardwareSensorLoop() {
+		return new HardwareSensorLoop();
+	}
+	
+	
+	
+	public class HardwareSensorLoop implements Loop {
+		@Override
+		public void update() {
+			updateSensors(RobotEnclosingThread.getRobotState());
+		}
+
+		@Override
+		public void onStart() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onStop() {
+			// TODO Auto-generated method stub
+			
+		}
+	}
 
 	// Subsystem references
 	
@@ -24,12 +49,12 @@ class HardwareUpdater {
 	private Spatula mSpatula;
 	private Intake mIntake;
 	private Climber mClimber;
-	private Robot mRobot;
+	private RobotEnclosingThread mRobot;
 
 	/**
 	 * Hardware Updater for Steik
 	 */
-	HardwareUpdater(Robot robot, Drive drive, Slider slider, Spatula spatula, Intake intake, Climber climber)
+	HardwareUpdater(RobotEnclosingThread robot, Drive drive, Slider slider, Spatula spatula, Intake intake, Climber climber)
 			throws Exception {
 		if (Constants.kRobotName != Constants.RobotName.STEIK) {
 			System.out.println("Incompatible robot name and hardware!");

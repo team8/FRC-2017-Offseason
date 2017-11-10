@@ -22,7 +22,7 @@ public class Commands {
 		return instance;
 	}
 
-	private Commands() {}
+	public Commands() {}
 
 	public ArrayList<Routine> wantedRoutines = new ArrayList<Routine>();
 
