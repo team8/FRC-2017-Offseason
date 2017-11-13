@@ -2,7 +2,10 @@ package com.palyrobotics.frc2017.vision;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
