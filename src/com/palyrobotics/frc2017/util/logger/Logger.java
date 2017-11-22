@@ -31,8 +31,9 @@ public class Logger {
 	public static Logger getInstance() {
 		return instance;
 	}
-
-	private String fileName = null;
+	
+	// Default filename
+	private String fileName = "DEFAULT";
 
 	private boolean isEnabled = false;
 	
@@ -73,6 +74,9 @@ public class Logger {
 	 * Also sanitizes inputs to prevent unwanted directory creation
 	 */
 	public void start() {
+		if(fileName == "DEFAULT") {
+			System.err.println("WARNING: Using default filename!");
+		}
 		// If initialized before, then recreate the buffered writer and re-enable
 		if (mWritingThread != null) {
 			isEnabled = true;
@@ -131,7 +135,7 @@ public class Logger {
 
 	/**
 	 * Called on subsystem thread
-	 * @param value
+	 * @param value Object used for input; stores .toString() value
 	 */
 	@Deprecated
 	public void logSubsystemThread(Object value) {
@@ -149,6 +153,11 @@ public class Logger {
 		pw.flush();
 	}
 
+	/**
+	 * Called on subsystem thread
+	 * @param l Sets level of log message; determines writing to console and file
+	 * @param value Object used for input; stores .toString() value
+	 */
 	public void logSubsystemThread(Level l, Object value) {
 		try {
 			if(LoggerConstants.writeStackTrace && value instanceof Throwable && l.intValue() >= 900) {
@@ -166,8 +175,8 @@ public class Logger {
 	
 	/**
 	 * Called on subsystem thread
-	 * @param key
-	 * @param value will call .toString()
+	 * @param key String added to input object
+	 * @param value Object used for input; stores .toString() value
 	 */
 	@Deprecated
 	public void logSubsystemThread(String key, Object value) {
@@ -185,7 +194,12 @@ public class Logger {
 		pw.flush();
 	}
 	
-
+	/**
+	 * Called on subsystem thread
+	 * @param l Sets level of log message; determines writing to console and file
+	 * @param key String added to input object
+	 * @param value Object used for input; stores .toString() value
+	 */
 	public void logSubsystemThread(Level l, String key, Object value) {
 		try {
 			if(LoggerConstants.writeStackTrace && value instanceof Throwable && l.intValue() >= 900) {
@@ -203,7 +217,7 @@ public class Logger {
 
 	/**
 	 * Called on robot thread
-	 * @param value
+	 * @param value Object used for input; stores .toString() value
 	 */
 	@Deprecated
 	public void logRobotThread(Object value) {
@@ -216,11 +230,16 @@ public class Logger {
 				mRobotThreadLogs.add(new TimestampedString(value.toString()));
 			}
 		} catch (ConcurrentModificationException e) {
-			System.err.println("Attempted concurrent modification on subsystem logger");
+			System.err.println("Attempted concurrent modification on robot logger");
 		}
 		pw.flush();
 	}
 	
+	/**
+	 * Called on robot thread
+	 * @param l Sets level of log message; determines writing to console and file
+	 * @param value Object used for input; stores .toString() value
+	 */
 	public void logRobotThread(Level l, Object value) {
 		try {
 			if(LoggerConstants.writeStackTrace && value instanceof Throwable && l.intValue() <= 900) {
@@ -231,7 +250,7 @@ public class Logger {
 				mRobotThreadLogs.add(new LeveledString(l, value.toString()));
 			}
 		} catch (ConcurrentModificationException e) {
-			System.err.println("Attempted concurrent modification on subsystem logger");
+			System.err.println("Attempted concurrent modification on robot logger");
 		}
 		pw.flush();
 	}
@@ -239,8 +258,8 @@ public class Logger {
 	
 	/**
 	 * Called on robot thread
-	 * @param key will be paired with the object
-	 * @param value will call .toString()
+	 * @param key String added to input object
+	 * @param value Object used for input; stores .toString() value
 	 */
 	@Deprecated
 	public void logRobotThread(String key, Object value) {
@@ -253,16 +272,15 @@ public class Logger {
 				mRobotThreadLogs.add(new TimestampedString(key + ": " + value.toString()));
 			}
 		} catch (ConcurrentModificationException e) {
-			System.err.println("Attempted concurrent modification on subsystem logger");
+			System.err.println("Attempted concurrent modification on robot logger");
 		}
 	}
 	
 	/**
-	 * Overloaded function to submit messages to the logger
-	 * SubsystemThread should be used in subsystem package, use robotThread everywhere else
-	 * @param l The level of logger call to be sent 
-	 * @param key Text to provide context to object
-	 * @param value Object submitted, call toString() on
+	 * Called on robot thread
+	 * @param l Sets level of log message; determines writing to console and file
+	 * @param key String added to input object
+	 * @param value Object used for input; stores .toString() value
 	 */
 	public void logRobotThread(Level l, String key, Object value) {
 		try {
@@ -274,7 +292,7 @@ public class Logger {
 				mRobotThreadLogs.add(new LeveledString(l, key + ": " + value.toString()));
 			}
 		} catch (ConcurrentModificationException e) {
-			System.err.println("Attempted concurrent modification on subsystem logger");
+			System.err.println("Attempted concurrent modification on robot logger");
 		}
 		pw.flush();
 	}
@@ -286,6 +304,7 @@ public class Logger {
 		mData = new ArrayList<>();
 		mRunnable = () -> {
 			while (true) {
+				writeLogs();
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e){
@@ -311,18 +330,15 @@ public class Logger {
 				mData = new ArrayList<>(mRobotThreadLogs);
 				mData.addAll(mSubsystemThreadLogs);
 				mData.sort(TimestampedString::compareTo);
-				mSubsystemThreadLogs.clear();
-				mRobotThreadLogs.clear();
 				mData.forEach((TimestampedString c) -> {
 					try {
+						System.out.println(c.toString());
 						if(c instanceof LeveledString && ((LeveledString) c).getLevel().intValue() >= LoggerConstants.displayLevel.intValue()) {
-							System.out.println(c.toString());
 							if(((LeveledString) c).getLevel().intValue() >= LoggerConstants.writeLevel.intValue()) {
 								Files.append(((LeveledString) c).getLeveledString(), mainLog, Charsets.UTF_8);
 							}
 						}
 						else if(!(c instanceof LeveledString) && c instanceof TimestampedString) {
-							System.out.println(c.toString());
 							Files.append(c.getTimestampedString(), mainLog, Charsets.UTF_8);
 						}
 					} catch (IOException e) {
@@ -330,6 +346,8 @@ public class Logger {
 					}
 				});
 				mData.clear();
+				mSubsystemThreadLogs.clear();
+				mRobotThreadLogs.clear();
 			}
 		}
 	}
@@ -357,14 +375,5 @@ public class Logger {
 			}
 			isEnabled = false;
 		}
-		// Try to copy riolog to logging directory if it exists
-//		if (rioLog != null) {
-//			try {
-//				Files.copy(rioLog, new File("/home/lvuser/logs/" + fileName+"/riolog"+duplicatePrevent+".log"));
-//			} catch (IOException e) {
-//				System.out.println("Unable to copy riolog");
-//				e.printStackTrace();
-//			}
-//		}
 	}
 }
