@@ -36,7 +36,9 @@ public class Robot extends IterativeRobot {
 	}
 
 
-	private RobotEnclosingThread robotThread;
+
+	private Looper mSubsystemLooper = new Looper();
+	private Looper mStateEstimationLooper = new Looper();
 	
 	private double mStartTime;
 	private boolean startedClimberRoutine = false;
@@ -65,7 +67,6 @@ public class Robot extends IterativeRobot {
 			Logger.getInstance().logRobotThread("Auto: "+e.getMessage());
 		}
 		
-
 		System.out.println("Auto: "+AutoModeSelector.getInstance().getAutoMode().toString());
 		System.out.println("End robotInit()");
 		Logger.getInstance().logRobotThread("End robotInit()");
@@ -112,7 +113,14 @@ public class Robot extends IterativeRobot {
 
 		// Prestart and run the auto mode
 		mode.prestart();
-		this.robotThread.addRoutine(mode.getRoutine());
+
+		mRoutineManager.addNewRoutine(mode.getRoutine());
+		Logger.getInstance().logRobotThread("Auto mode", mode.toString());
+		Logger.getInstance().logRobotThread("Auto routine", mode.getRoutine().toString());
+		System.out.println("End autonomousInit()");
+		Logger.getInstance().logRobotThread("End autonomousInit()");
+		mSubsystemLooper.start();
+		mStateEstimationLooper.start();
 	}
 
 	@Override
@@ -143,7 +151,29 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledInit() {
-		this.robotThread.stop();
+
+		System.out.println("Start disabledInit()");
+		Logger.getInstance().logRobotThread("Start disabledInit()");
+		System.out.println("Current Auto Mode: " + AutoModeSelector.getInstance().getAutoMode().toString());
+		robotState.gamePeriod = RobotState.GamePeriod.DISABLED;
+		mSubsystemLooper.stop();
+		mStateEstimationLooper.stop();
+
+		// Stops updating routines
+		mRoutineManager.reset(commands);
+
+		//Creates a new Commands instance in place of the old one
+		Commands.reset();
+		
+		// Stop controllers
+		mDrive.setNeutral();
+		mHardwareUpdater.configureDriveTalons();
+		mHardwareUpdater.disableTalons();
+		DashboardManager.getInstance().toggleCANTable(false);
+		Logger.getInstance().logRobotThread("End disabledInit()");
+		Logger.getInstance().cleanup();
+		System.out.println("Log file: "+Logger.getInstance().getLogPath());
+
 		// Manually run garbage collector
 		System.gc();
 		System.out.println("Gyro: "+RobotEnclosingThread.getRobotState().drivePose.heading);
