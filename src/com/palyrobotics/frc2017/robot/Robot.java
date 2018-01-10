@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot {
 		return RobotEnclosingThread.getRobotState();
 	}
 
-
+	private RobotEnclosingThread robotThread;
 
 	private Looper mSubsystemLooper = new Looper();
 	private Looper mStateEstimationLooper = new Looper();

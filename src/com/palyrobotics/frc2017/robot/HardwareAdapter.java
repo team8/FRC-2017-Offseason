@@ -64,93 +64,6 @@ public class HardwareAdapter {
 		}
 	}
 
-	/**
-	 * SLIDER - 1 CANTalon
-	 */
-	public static class SliderHardware {
-		private static SliderHardware instance = new SliderHardware();
-		
-		protected static SliderHardware getInstance() {
-			return instance;
-		}
-		public final CANTalon sliderTalon;
-		public final AnalogInput sliderPotentiometer;
-
-		public static void resetEncoder() {
-			instance.sliderTalon.reset();
-		}
-
-		private SliderHardware() {
-			if (Constants.kRobotName == Constants.RobotName.STEIK){
-				sliderTalon = new CANTalon(Constants.kSteikSliderMotorDeviceID);
-				sliderPotentiometer = new AnalogInput(Constants.kSteikSliderPotentiometerPort);
-			}
-			else {
-				sliderTalon = null;
-				sliderPotentiometer = null;
-			}
-		}
-	}
-
-	/**
-	 * SPATULA - 1 double solenoid
-	 */
-	public static class SpatulaHardware {
-		private static SpatulaHardware instance = new SpatulaHardware();
-		public static SpatulaHardware getInstance() {
-			return instance;
-		}
-		public final DoubleSolenoid spatulaSolenoid;
-
-		private SpatulaHardware() {
-			if (Constants.kRobotName == Constants.RobotName.STEIK) {
-				spatulaSolenoid = new DoubleSolenoid(Constants.kSteikSpatulaPortExtend, Constants.kSteikSpatulaPortRetract);
-			} else {
-				spatulaSolenoid = null;
-			}
-		}
-	}
-	
-	/*
-	 * INTAKE - 1 VictorSP
-	 */
-	public static class IntakeHardware {
-		private static IntakeHardware instance = new IntakeHardware();
-
-		protected static IntakeHardware getInstance() {
-			return instance;
-		}
-		public final VictorSP intakeMotor;
-
-		private IntakeHardware() {
-			if (Constants.kRobotName == Constants.RobotName.STEIK) {
-				intakeMotor = new VictorSP(Constants.kSteikIntakeMotorDeviceID);
-			} else {
-				intakeMotor = null;
-			}
-		}
-	}
-
-	/*
-	 * CLIMBER - 1 CANTalon
-	 */
-	public static class ClimberHardware {
-		private static ClimberHardware instance = new ClimberHardware();
-		
-		protected static ClimberHardware getInstance(){
-			return instance;
-		}
-		public final CANTalon climberTalon;
-		
-		private ClimberHardware() {
-			if (Constants.kRobotName == Constants.RobotName.STEIK) {
-				climberTalon = new CANTalon(Constants.kSteikClimberMotorDeviceID);
-			} else {
-				climberTalon = null;
-			}
-		}
-	}
-
 	// Joysticks for operator interface
 	protected static class Joysticks {
 		private static Joysticks instance = new Joysticks();
@@ -171,18 +84,6 @@ public class HardwareAdapter {
 	// Wrappers to access hardware groups
 	public DrivetrainHardware getDrivetrain() {
 		return DrivetrainHardware.getInstance();
-	}
-	public SliderHardware getSlider() {
-		return SliderHardware.getInstance();
-	}
-	public SpatulaHardware getSpatula() {
-		return SpatulaHardware.getInstance();
-	}
-	public IntakeHardware getIntake() {
-		return IntakeHardware.getInstance();
-	}
-	public ClimberHardware getClimber() {
-		return ClimberHardware.getInstance();
 	}
 	public Joysticks getJoysticks() {
 		return Joysticks.getInstance();
